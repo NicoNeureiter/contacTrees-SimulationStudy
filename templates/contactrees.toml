@@ -1,0 +1,13 @@
+[xml]
+
+[templates]
+alignment = "alignment.toml"
+substitution_model = "subst_models/ctmc.toml"
+population_model = "pop_models/ACGyule.toml"
+clock_model = "clock_models/strict.toml"
+
+[defaults]
+chain_length = 100000
+log_every = 100
+sample_from_prior = false
+seqlength = 20

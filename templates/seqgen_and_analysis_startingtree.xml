@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE note [
+	<!ENTITY blockrange "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49">
+]>
+<beast version="2.0"
+       namespace="beast.evolution.tree
+       			 :beast.evolution.tree.coalescent
+                 :beast.evolution.alignment
+                 :beast.evolution.operators
+                 :beast.evolution.sitemodel
+                 :beast.evolution.substitutionmodel
+                 :beast.evolution.likelihood
+                 :beast.evolution.nuc
+                 :beast.core
+                 :beast.core.util
+                 :beast.core.parameter
+                 :contactrees
+                 :contactrees.model
+                 :contactrees.util
+                 :contactrees.operators">
+
+<!-- Map block -->
+<map name="Uniform">beast.math.distributions.Uniform</map>
+<map name="Exponential">beast.math.distributions.Exponential</map>
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal">beast.math.distributions.Normal</map>
+<map name="Beta">beast.math.distributions.Beta</map>
+<map name="Gamma">beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+<map name="prior">beast.math.distributions.Prior</map>
+<map name="InverseGamma">beast.math.distributions.InverseGamma</map>
+<map name="OneOnX">beast.math.distributions.OneOnX</map>
+
+<!-- TAXA -->
+<taxonset id="taxa" spec="TaxonSet">
+{{#taxa}}
+	<taxon id="{{.}}" spec="Taxon"/>
+{{/taxa}}
+</taxonset>
+
+<!-- REFERENCE BLOCK-SET -->
+<blockSet id="blockSet.sim" spec="contactrees.BlockSet" deferNetworkSpecification="true">
+	<plate var="x" range="&blockrange;">
+		<block spec="contactrees.Block" id="block$(x).sim"/>
+	</plate>
+</blockSet>
+
+<!-- REFERENCE TREE -->
+<tree id="acg.sim" spec="contactrees.ACGWithBlocksReader" taxonset="@taxa" blockSet="@blockSet.sim"
+	newick="{{tree}}"/>
+
+<!-- SITE AND CLOCK-MODEL -->
+<siteModel id="siteModel.sim" spec="SiteModel">
+	<substModel id="binaryCTMC.sim" spec="GeneralSubstitutionModel">
+	    <parameter dimension="2" estimate="false" id="rates.binaryCTMC.sim" name="rates">1.0 1.0</parameter>
+	    <frequencies id="estimatedFreqs.sim" spec="Frequencies" frequencies="0.5 0.5"/>
+	</substModel>
+</siteModel>
+<branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="1.0"/>
+
+<!-- SIMULATED DATA -->
+<plate var="x" range="&blockrange;">
+	<data spec='beast.app.seqgen.SimulatedAlignment' id="simulated.block.$(x)" sequencelength="{{seqlength}}"  dataType="binary"
+		  siteModel="@siteModel.sim" branchRateModel="@clock.sim" outputFileName="{{sequence_output}}">
+		<tree id="marginalTree.sim.$(x)" spec="MarginalTree" network="@acg.sim" block="@block$(x).sim" nodetype="contactrees.MarginalNode"/> 
+	    <data spec="Alignment" dataType="binary">
+	        {{#taxa}}
+	        <sequence taxon="{{.}}" totalcount="2">?</sequence>
+	        {{/taxa}}
+	    </data>
+	</data>
+</plate>
+
+
+<!-- ==================== ANALYSIS DEFINITION ==================== -->
+
+
+<!-- BLOCK-SET -->
+<stateNode spec="BlockSet" id="allBlocks" network="@acg">
+	<plate var="x" range="&blockrange;">
+		<block spec="Block" id="block$(x)"/>
+	</plate>
+</stateNode>
+
+<!-- SITE- AND CLOCK-MODEL -->
+<siteModel id="siteModel" spec="SiteModel">
+{{{substitution_model}}}
+</siteModel>
+<branchRateModel id="clock" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="1.0"/>
+
+<!-- MCMC -->
+<run id="mcmc" spec="MCMC" chainLength="{{chain_length}}" sampleFromPrior="{{sample_from_prior}}">
+
+    <!-- STATE -->
+ 	<state id="state" storeEvery="10000">
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" extendedNewick="{{tree}}" dropNewickConvs="true"/>
+        <plate var="x" range="&blockrange;">
+            <stateNode idref="block$(x)"/>
+        </plate>
+
+{{#parameters}}
+{{{.}}}
+{{/parameters}}
+ 	</state>
+
+	<!-- POSTERIOR -->
+   <distribution id="posterior" spec="util.CompoundDistribution">
+
+        <!-- PRIOR -->
+        <distribution id="prior" spec="util.CompoundDistribution">
+{{{population_model}}}
+
+{{#priors}}
+{{{.}}}
+{{/priors}}
+
+        </distribution>
+
+        <!-- LIKELIHOOD -->
+        <distribution id="likelihood" spec="util.CompoundDistribution">
+            <plate var="x" range="&blockrange;">
+                <distribution id="treeLikelihood.block$(x)" spec="TreeLikelihood" branchRateModel="@clock" siteModel="@siteModel" data="@simulated.block.$(x)">
+                    <tree id="marginalTree.$(x)" spec="MarginalTree" network="@acg" block="@block$(x)" nodetype="contactrees.MarginalNode"/>    
+                </distribution>
+            </plate>
+            
+        </distribution>
+    </distribution>
+	
+    <!-- Operators -->
+{{#operators}}
+{{{.}}}
+{{/operators}}
+
+
+    <!-- Loggers -->
+    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="{{log_every}}"
+            model="@posterior" sanitiseHeaders="true" sort="smart">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+{{#logs}}
+{{{.}}}
+{{/logs}}
+    </logger>
+
+    <logger id="screenlog" spec="Logger" logEvery="2000">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
+    </logger>
+
+    <logger spec="Logger" fileName="$(filebase).trees" logEvery="{{log_every}}" mode="tree">
+    	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
+    </logger>
+</run>
+
+</beast>

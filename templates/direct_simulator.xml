@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE note [
+    <!ENTITY blockrange "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19">
+]>
+<beast version='2.0'
+       namespace='beast.evolution.tree
+                 :beast.evolution.tree.coalescent
+                 :beast.evolution.alignment
+                 :beast.evolution.sitemodel
+                 :beast.evolution.substitutionmodel
+                 :beast.core
+                 :beast.core.parameter
+                 :contactrees
+                 :contactrees.model
+                 :contactrees.util'>
+
+
+<!-- DATA -->
+<plate var="x" range="&blockrange;">
+    <data id="simulated.block.$(x)" dataType="binary">
+        {{#taxa}}
+        <sequence taxon="{{.}}" totalcount="2">?</sequence>
+        {{/taxa}}
+    </data>
+</plate>
+
+
+
+<!-- MAP BLOCK -->
+<map name="Uniform">beast.math.distributions.Uniform</map>
+<map name="Exponential">beast.math.distributions.Exponential</map>
+<map name="LogNormal">beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal">beast.math.distributions.Normal</map>
+<map name="Beta">beast.math.distributions.Beta</map>
+<map name="Gamma">beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution">beast.math.distributions.LaplaceDistribution</map>
+<map name="prior">beast.math.distributions.Prior</map>
+<map name="InverseGamma">beast.math.distributions.InverseGamma</map>
+<map name="OneOnX">beast.math.distributions.OneOnX</map>
+
+
+<!-- BLOCK-SET DECLARATION -->
+<stateNode spec="BlockSet" id="allBlocks" network="@acg">
+	<plate var="x" range="&blockrange;">
+		<block spec="Block" id="block$(x)"/>
+	</plate>
+</stateNode>
+
+
+<siteModel id="siteModel" spec="SiteModel">
+{{{substitution_model}}}
+</siteModel>
+{{{clock_model}}}
+
+
+<!-- STATE -->
+<stateNode id="acg" spec="ConversionGraph">
+    <taxonset id="taxa" spec="TaxonSet" alignment="@simulated.block.0"/>
+</stateNode>
+{{#parameters}}
+{{{.}}}
+{{/parameters}}
+
+<!-- MCMC -->
+<run spec="DirectSimulator" nSamples="{{nsamples}}">
+
+
+ 	
+
+    <!-- PRIOR -->
+    <distribution id="prior" spec="util.CompoundDistribution">
+
+{{{population_model}}}
+
+{{#priors}}
+{{{.}}}
+{{/priors}}
+
+    </distribution>
+
+
+    <!-- LOGGERS -->
+    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="1"
+            sanitiseHeaders="true" sort="smart">
+        <log idref="prior"/>
+{{#logs}}
+{{{.}}}
+{{/logs}}
+    </logger>
+
+    <logger id="screenlog" spec="Logger" logEvery="1">
+        <log idref="prior"/>
+{{#logs}}
+{{{.}}}
+{{/logs}}
+    </logger>
+
+    <logger spec="Logger" fileName="$(filebase).trees" logEvery="1" mode="tree">
+    	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
+    </logger>
+</run>
+  
+</beast>

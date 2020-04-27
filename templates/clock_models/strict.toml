@@ -1,0 +1,6 @@
+[xml]
+clock_model = """
+<branchRateModel id="clock" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="1.0"/>
+"""
+
+[defaults]

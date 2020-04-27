@@ -1,0 +1,59 @@
+[xml]
+population_model = """
+        <distribution id="CoalescentConstant.t:tree" spec="Coalescent">
+            <populationModel id="ConstantPopulation.t:tree" spec="ConstantPopulation" popSize="@popSize.t:tree"/>
+            <treeIntervals id="TreeIntervals.t:tree" spec="TreeIntervals" tree="@acg"/>
+        </distribution>
+        <distribution id="ConversionPrior.t:treeSim" spec="contactrees.model.ConversionPrior" network="@acg" conversionRate="@conversionRate"/>
+        <distribution id="ConvMovePrior.t:treeSim" spec="ConversionMovePrior" network="@acg" blockSet="@allBlocks" pMove="@pMove"/>
+"""
+
+logs = """
+        <log idref="popSize.t:tree"/>
+        <log idref="CoalescentConstant.t:tree"/>
+        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
+        <log idref="conversionRate"/>
+"""
+
+operators = """
+    <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1"  weight="5.0"/>
+    <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" weight="10.0"/>
+    <operator id="CFNarrowExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="true" weight="10.0"/>      
+    <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" weight="5.0"/>
+    <operator id="ACGscale.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0"/>
+    <operator id="ACGscale.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0" rootOnly="true"/>
+
+    <operator id="AddRemoveConversion.t" spec="AddRemoveConversionGibbs" weight="20.0" acg="@acg" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks">
+        <plate var="x" range="&blockrange;">
+	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+
+    <operator id="ConvertedEdgeSlide.t" spec="ConvertedEdgeSlide" acg="@acg" weight="20.0"/>
+    <operator id="ConvertedEdgeFlip.t" spec="ConvertedEdgeFlip" acg="@acg" weight="10.0"/>
+
+    <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="20.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
+        <plate var="x" range="&blockrange;">
+	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+
+    <operator id="ConversionRateScaler" spec="ScaleOperator" parameter="@conversionRate" scaleFactor="0.8" weight="3.0"/>
+"""
+
+parameters = """
+        <parameter id="popSize.t:tree" spec="parameter.RealParameter" name="stateNode" estimate="false">{{popSize}}</parameter>
+        <stateNode id="pMove" spec="RealParameter" estimate="false" value="{{pMove}}"/>
+        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
+"""
+
+priors = """
+            <prior id="convRatePrior" name="distribution" x="@conversionRate">
+                <LogNormal id="LogNormalDistr.convRatePrior" meanInRealSpace="true" name="distr" M="0.75" S="1.0"/>
+            </prior>
+"""
+
+[defaults]
+popSize = 0.25
+pMove = 0.2
+conversionRate = 0.75
