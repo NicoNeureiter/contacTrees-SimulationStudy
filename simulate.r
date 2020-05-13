@@ -5,7 +5,7 @@
 library("argparser")
 
 import::from("src/beast.r", process_beast_template)
-import::from("src/utils.r", settmpwd, mkdir, run_beast)
+import::from("src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser, run_coverage_calculator)
 import::from("src/seqgen.r", seqgen_sampling)
 
 options(scipen=999)
@@ -13,8 +13,8 @@ options(scipen=999)
 SAMPLING.DIR = "intermediate/sampling/"
 
 main = function(){
-    ntax = 6
-    nsamples = 4
+    ntax = 8
+    nsamples = 50
     repeats = 1
 
     mkdir("intermediate/sampling")
@@ -25,9 +25,10 @@ main = function(){
     simulator_params = list(
         "sample_from_prior" = "true",
         "taxa" = taxa,
-        "nsamples" = nsamples+1 # number of samples
+        "nsamples" = 1 + nsamples # number of samples
         )
-
+    
+    # template_beast = "templates/BEAST.xml"
     template_beast = "templates/direct_simulator.xml"
     template_seqgen = "templates/seqgen_and_analysis.xml"
     # template_seqgen = "templates/seqgen_and_analysis_startingtree.xml"
@@ -55,12 +56,15 @@ main = function(){
         config,
         taxa,
         "intermediate/test.xml",
-        list(seqlength="10"),
+        list(seqlength="40"),
         repeats = repeats
     )
     # merge with another template without sampling from prior
     # run those beast analyses
     # evaluate
+    
+    run_loganalyser()
+    run_coverage_calculator()
     }
 
 make_taxa_names = function(ntax){

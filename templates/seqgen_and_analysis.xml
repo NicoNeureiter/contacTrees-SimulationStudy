@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE note [
-	<!ENTITY blockrange "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19">
+	<!ENTITY blockrange "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49">
 ]>
 <beast version="2.0"
        namespace="beast.evolution.tree
@@ -93,7 +93,10 @@
 
     <!-- STATE -->
  	<state id="state" storeEvery="10000">
+        <!--
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
+        -->
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" extendedNewick="{{tree}}" dropNewickConvs="true"/>
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x)"/>
         </plate>
@@ -103,9 +106,9 @@
 {{/parameters}}
  	</state>
  	
-    
-    <!-- INITIALIZER -->
+    <!-- INITIALIZER
  	<init id="RandomACG" spec="beast.evolution.tree.SimpleRandomTree" estimate="false" initial="@acg" taxa="@simulated.block.0"/>
+    -->
 
 	<!-- POSTERIOR -->
    <distribution id="posterior" spec="util.CompoundDistribution">

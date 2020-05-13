@@ -14,40 +14,54 @@ logs = """
 """
 
 operators = """
+<!--
     <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1"  weight="5.0"/>
-    <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" weight="10.0"/>
+    <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" weight="20.0"/>
     <operator id="CFNarrowExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="true" weight="10.0"/>      
     <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" weight="5.0"/>
     <operator id="ACGscale.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0"/>
     <operator id="ACGscale.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0" rootOnly="true"/>
 
+-->
+
+<!--
+    <operator id="AddRemoveConversion.t" spec="AddRemoveConversion" weight="30.0" acg="@acg" pMove="@pMove"
+              conversionRate="@conversionRate" blockSet="@allBlocks"/> 
+--> 
+
     <operator id="AddRemoveConversion.t" spec="AddRemoveConversionGibbs" weight="20.0" acg="@acg" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks">
         <plate var="x" range="&blockrange;">
 	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
         </plate>
-    </operator>
+    </operator>   
 
     <operator id="ConvertedEdgeSlide.t" spec="ConvertedEdgeSlide" acg="@acg" weight="20.0"/>
     <operator id="ConvertedEdgeFlip.t" spec="ConvertedEdgeFlip" acg="@acg" weight="10.0"/>
 
-    <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="20.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
+
+    <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="10.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
         <plate var="x" range="&blockrange;">
 	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
         </plate>
     </operator>
 
-    <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.8" weight="3.0"/>
-    <operator id="ConversionRateScaler" spec="ScaleOperator" parameter="@conversionRate" scaleFactor="0.8" weight="3.0"/>
-    <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.8" weight="3.0"/>
+
+<!--
+    <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
+-->
+    <operator id="ConversionRateScaler" spec="ScaleOperator" parameter="@conversionRate" scaleFactor="0.7" weight="3.0"/>
+    <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.7" weight="3.0"/>
+
 """
 
 parameters = """
-        <stateNode id="birthRate" spec="RealParameter" estimate="true" value="{{birthRate}}"/>
+        <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
         <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
         <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}"/>
 """
 
-priors = """
+priors = ""
+_priors = """
             <prior id="convRatePrior" name="distribution" x="@conversionRate">
                 <!-- <LogNormal id="LogNormal.convRate" meanInRealSpace="true" name="distr" M="0.75" S="0.5"/> -->
                 <Gamma id="Gamma.convRate" mode="ShapeScale" name="distr" alpha="2.5" beta="0.3"/>
@@ -62,5 +76,5 @@ priors = """
 
 [defaults]
 birthRate = 4.0
-pMove = 0.2
-conversionRate = 0.75
+pMove = 0.3
+conversionRate = 0.2

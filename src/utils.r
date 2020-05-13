@@ -49,6 +49,19 @@ run_beast = function(xml){
     }
 
 
+
+run_loganalyser = function(){
+  system2("loganalyser", args=c("-oneline", "intermediate/test.???.001.log", ">", "results"))
+}
+
+run_coverage_calculator = function(){
+  system2("/opt/phylo/beast2/bin/applauncher", 
+          args=c("CoverageCa", 
+                 "-log", "/home/nico/workspace/contactrees_simulation_study/intermediate/sampling/SAMPLING.log",
+                 "-logA", "/home/nico/workspace/contactrees_simulation_study/results",
+                 "-out", "/home/nico/workspace/contactrees_simulation_study/intermediate/tmp/"))
+}
+
 # similar to mkdir -p
 mkdir = function(dir){
     if(!dir.exists(dir))

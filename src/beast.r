@@ -17,6 +17,7 @@ process_beast_template = function(template, config, taxa, output, parameters=NUL
     data = merge(data, defaults)
     
     data$taxa = taxa
+    print(output)
     process_template(template, data, output)
     }
 
