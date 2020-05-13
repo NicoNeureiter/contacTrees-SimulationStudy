@@ -1,19 +1,27 @@
-# MHKY simulation study
-A simulation study to test the MHKY model from the `phylonco` package.
+# Contactrees simulation study
+A well callibrated simulation study to test the contactrees model.
 
 ## Steps:
-* sample random parameters and trees (according to these parameters) from prior
+* sample random parameters, tree and contact edges from prior distribution
 * generate data according to model using the `seqgen` package
 * reconstruct the tree and parameters from simulated data using BEAST
-* compare the reconstructed topology and parameters with the simulated one
+* compare statistics about the reconstructed trees, edges and parameters with the simulated one
 
 ## Simulated scenarios
 ### Data
-* MHKY with varied kappa, alpha, beta and gamma
-* HKY/GTR + binary model for methylation
+* CTMC
+* BinaryCovarion
 ### Tree
-* constant population size
-* exponentially growing pop. size
+* constant population size coalescent
+* Yule
+* Birth-death
+### Contact rate
+* Fixed contact rate
+* Constant estimated contact rate
+### Borrowing probability (per word and contact rate)
+* Fixed borrowing probability
+* Constant estimated borrowing probability
+* Borrowing probability varrying between words
 ### Clock
 * strict
 * relaxed lognormal
