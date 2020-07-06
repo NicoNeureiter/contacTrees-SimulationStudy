@@ -46,7 +46,7 @@
 </blockSet>
 
 <!-- REFERENCE TREE -->
-<tree id="acg.sim" spec="contactrees.ACGWithBlocksReader" taxonset="@taxa" blockSet="@blockSet.sim"
+<tree id="acg.sim" spec="contactrees.ACGWithBlocks" taxonset="@taxa" blockSet="@blockSet.sim"
 	newick="{{tree}}"/>
 
 <!-- SITE AND CLOCK-MODEL -->
@@ -123,8 +123,8 @@
 
         </distribution>
 
-        <!-- LIKELIHOOD -->
-        <distribution id="likelihood" spec="util.CompoundDistribution">
+        <!-- LIKELIHOOD --
+>        <distribution id="likelihood" spec="util.CompoundDistribution">
             <plate var="x" range="&blockrange;">
                 <distribution id="treeLikelihood.block$(x)" spec="TreeLikelihood" branchRateModel="@clock" siteModel="@siteModel" data="@simulated.block.$(x)">
                     <tree id="marginalTree.$(x)" spec="MarginalTree" network="@acg" block="@block$(x)" nodetype="contactrees.MarginalNode"/>    
@@ -149,12 +149,14 @@
 {{/logs}}
     </logger>
 
-    <logger id="screenlog" spec="Logger" logEvery="2000">
+    <logger id="screenlog" spec="Logger" logEvery="5000">
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
-        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
-    </logger>
+{{#logs}}
+{{{.}}}
+{{/logs}
+}    </logger>
 
     <logger spec="Logger" fileName="$(filebase).trees" logEvery="{{log_every}}" mode="tree">
     	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
