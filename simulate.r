@@ -25,13 +25,11 @@ main = function(){
     simulator_params = list(
         "sample_from_prior" = "true",
         "taxa" = taxa,
-        "nsamples" = 1 + nsamples # number of samples
+        "nsamples" = 1 + nsamples
         )
     
-    # template_beast = "templates/BEAST.xml"
     template_beast = "templates/direct_simulator.xml"
     template_seqgen = "templates/seqgen_and_analysis.xml"
-    # template_seqgen = "templates/seqgen_and_analysis_startingtree.xml"
 
     config = "templates/contactrees.toml"
 

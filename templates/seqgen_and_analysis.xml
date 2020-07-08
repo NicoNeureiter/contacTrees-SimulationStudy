@@ -96,7 +96,7 @@
         <!--
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
         -->
-        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" extendedNewick="{{tree}}" dropNewickConvs="true"/>
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x)"/>
         </plate>
@@ -123,8 +123,8 @@
 
         </distribution>
 
-        <!-- LIKELIHOOD --
->        <distribution id="likelihood" spec="util.CompoundDistribution">
+        <!-- LIKELIHOOD -->
+        <distribution id="likelihood" spec="util.CompoundDistribution">
             <plate var="x" range="&blockrange;">
                 <distribution id="treeLikelihood.block$(x)" spec="TreeLikelihood" branchRateModel="@clock" siteModel="@siteModel" data="@simulated.block.$(x)">
                     <tree id="marginalTree.$(x)" spec="MarginalTree" network="@acg" block="@block$(x)" nodetype="contactrees.MarginalNode"/>    
@@ -155,8 +155,8 @@
         <log idref="prior"/>
 {{#logs}}
 {{{.}}}
-{{/logs}
-}    </logger>
+{{/logs}}
+    </logger>
 
     <logger spec="Logger" fileName="$(filebase).trees" logEvery="{{log_every}}" mode="tree">
     	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>

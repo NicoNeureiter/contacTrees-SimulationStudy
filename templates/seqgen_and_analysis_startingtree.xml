@@ -93,7 +93,7 @@
 
     <!-- STATE -->
  	<state id="state" storeEvery="10000">
-        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" extendedNewick="{{tree}}" dropNewickConvs="true"/>
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x)"/>
         </plate>
