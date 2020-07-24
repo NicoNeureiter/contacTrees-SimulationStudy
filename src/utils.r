@@ -19,7 +19,6 @@ process_template = function(template, data, output){
         }
     }
 
-
 find_tags = function(template){
     if(file.exists(template)){
         template = readLines(template)
@@ -32,7 +31,6 @@ find_tags = function(template){
     tags
     }
 
-
 # temporarily set path to particular directory
 # path is restored once the calling function/frame ends.
 settmpwd = function(wd){
@@ -42,7 +40,6 @@ settmpwd = function(wd){
     setwd(wd)
     }
 
-
 run_beast = function(xml){
     print(paste("...... start beast: ", xml))
     settmpwd(dirname(xml))
@@ -50,18 +47,16 @@ run_beast = function(xml){
     print("...... end beast")
     }
 
-
-
 run_loganalyser = function(){
-  system2("loganalyser", args=c("-oneline", "intermediate/test.???.001.log", ">", "results"))
+  system2("loganalyser", args=c("-oneline", "intermediate/test.???.001.log", ">", "intermediate/results.tsv"))
 }
 
 run_coverage_calculator = function(){
-  system2("/opt/phylo/beast2/bin/applauncher", 
+  system2("applauncher", 
           args=c("CoverageCa", 
-                 "-log", "/home/nico/workspace/contactrees_simulation_study/intermediate/sampling/SAMPLING.log",
-                 "-logA", "/home/nico/workspace/contactrees_simulation_study/results",
-                 "-out", "/home/nico/workspace/contactrees_simulation_study/intermediate/tmp/"))
+                 "-log", "intermediate/sampling/SAMPLING.log",
+                 "-logA", "intermediate/results.tsv",
+                 "-out", "intermediate/coverage/"))
 }
 
 # similar to mkdir -p
