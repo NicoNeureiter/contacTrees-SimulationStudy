@@ -20,15 +20,16 @@ operators = """
         </plate>
     </operator>
     <operator id="ConvertedEdgeSlide.t" spec="ConvertedEdgeSlide" acg="@acg" weight="20.0"/>
-    <operator id="ConvertedEdgeFlip.t" spec="ConvertedEdgeFlip" acg="@acg" weight="10.0"/>
+    <operator id="ConvertedEdgeFlip.t" spec="ConvertedEdgeFlip" acg="@acg" weight="5.0"/>
 
-    <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="10.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
+    <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="20.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
         <plate var="x" range="&blockrange;">
 	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
         </plate>
     </operator>
 
     <operator id="ConversionRateScaler" spec="ScaleOperator" parameter="@conversionRate" scaleFactor="0.5" weight="5.0"/>
+    <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.5" weight="7.0"/>
 """
 _operators = """
     <operator id="ACGscale.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0"/>
@@ -40,7 +41,6 @@ _operators = """
     <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" weight="5.0"/>
 
     <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
-    <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.5" weight="7.0"/>
 """
 
 parameters = """
@@ -53,13 +53,13 @@ priors = """
             <prior id="convRatePrior" name="distribution" x="@conversionRate">
                 <Gamma id="Gamma.convRate" mode="ShapeScale" name="distr" alpha="3.0" beta="0.2"/>
             </prior>
+            <prior id="pMovePrior" name="distribution" x="@pMove">
+                <Beta id="Beta.pMove" name="distr" alpha="30.0" beta="70.0"/>
+            </prior>
 """
 _priors = """
             <prior id="birthRatePrior" name="distribution" x="@birthRate">
                 <Gamma id="Gamma.birthRate" mode="ShapeScale" name="distr" alpha="30.0" beta="0.1"/>
-            </prior>
-            <prior id="pMovePrior" name="distribution" x="@pMove">
-                <Beta id="Beta.pMove" name="distr" alpha="30.0" beta="70.0"/>
             </prior>
 """
 
