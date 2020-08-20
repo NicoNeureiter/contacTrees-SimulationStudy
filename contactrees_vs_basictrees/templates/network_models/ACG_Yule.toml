@@ -1,0 +1,74 @@
+[xml]
+population_model = """
+        <distribution id="ACGYulePrior.t:treeSim" spec="contactrees.model.ACGDistribution" network="@acg" conversionRate="@conversionRate">
+            <cfModel id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false"/>
+        </distribution>
+        <distribution id="ConvMovePrior.t:treeSim" spec="ConversionMovePrior" network="@acg" blockSet="@allBlocks" pMove="@pMove"/>
+"""
+
+logs = """
+        <log idref="birthRate"/>
+        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
+        <log idref="conversionRate"/>
+        <log idref="pMove"/>
+"""
+
+operators = """
+    <operator id="ACGscale.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0"/>
+    <operator id="ACGscale.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0" rootOnly="true"/>
+
+    <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1"  weight="5.0"/>
+    <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" weight="20.0"/>
+    <operator id="CFNarrowExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="true" weight="10.0"/>      
+    <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" weight="5.0"/>
+
+    <operator id="AddRemoveConversion.t" spec="AddRemoveConversionGibbs" weight="20.0" acg="@acg" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks">
+        <plate var="x" range="&blockrange;">
+	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+    <operator id="ConvertedEdgeSlide.t" spec="ConvertedEdgeSlide" acg="@acg" weight="20.0"/>
+    <operator id="ConvertedEdgeFlip.t" spec="ConvertedEdgeFlip" acg="@acg" weight="5.0"/>
+ 	<operator id="ConversionSplit.t" spec="ConversionSplit" acg="@acg" weight="5.0" 
+ 	          blockSet="@allBlocks" conversionRate="@conversionRate" flip="false" pMove="@pMove"/> 
+ 	<operator id="ConversionSplitAndFlip.t" spec="ConversionSplit" acg="@acg" weight="5.0" 
+ 	          blockSet="@allBlocks" conversionRate="@conversionRate" flip="true" pMove="@pMove"/> 
+
+    <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="20.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
+        <plate var="x" range="&blockrange;">
+	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+
+    <operator id="ConversionRateScaler" spec="ScaleOperator" parameter="@conversionRate" scaleFactor="0.5" weight="5.0"/>
+    <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.5" weight="7.0"/>
+"""
+_operators = """
+
+    <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
+"""
+
+parameters = """
+        <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
+        <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}"/>
+        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
+"""
+
+priors = """
+            <prior id="convRatePrior" name="distribution" x="@conversionRate">
+                <Gamma id="Gamma.convRate" mode="ShapeScale" name="distr" alpha="3.0" beta="0.2"/>
+            </prior>
+            <prior id="pMovePrior" name="distribution" x="@pMove">
+                <Beta id="Beta.pMove" name="distr" alpha="15.0" beta="30.0"/>
+            </prior>
+"""
+_priors = """
+            <prior id="birthRatePrior" name="distribution" x="@birthRate">
+                <Gamma id="Gamma.birthRate" mode="ShapeScale" name="distr" alpha="30.0" beta="0.1"/>
+            </prior>
+"""
+
+[defaults]
+birthRate = 1.5
+pMove = 0.3
+conversionRate = 0.5

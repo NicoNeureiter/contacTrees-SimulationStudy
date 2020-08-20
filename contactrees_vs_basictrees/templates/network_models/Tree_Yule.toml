@@ -1,0 +1,57 @@
+[xml]
+population_model = """
+            <distribution id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false"/>
+"""
+
+logs = """
+        <log idref="birthRate"/>
+        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
+        <log idref="conversionRate"/>
+        <log idref="pMove"/>
+"""
+
+operators = """
+    <operator id="SubtreeSlide.t:tree" spec="SubtreeSlide" tree="@acg" weight="15.0"/>
+    <operator id="NNI" spec="NNI" weight="25" tree="@acg"/>
+    <operator id="SPR" spec="SPR" weight="5" tree="@acg"/>
+    <operator id="narrow.t:z" spec="Exchange" tree="@acg" weight="15.0"/>
+    <operator id="wide.t:z" isNarrow="false" spec="Exchange" tree="@acg" weight="10.0"/>
+    <operator id="WilsonBalding.t:z" spec="WilsonBalding" tree="@acg" weight="10.0"/>
+    <operator id="UniformOperator.t" spec="Uniform" tree="@acg" weight="30.0"/>
+    <operator id="treescaler.rootOnly.t" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@acg" weight="3.0"/>
+    <operator id="treescaler.t" spec="ScaleOperator" scaleFactor="0.5" tree="@acg" weight="3.0"/>
+"""
+
+_operators = """
+    <operator id="RestrictedSubtreeSlide" spec="RestrictedSubtreeSlide" weight="25" tree="@acg" clades="@constraints"/>
+
+
+
+    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0"/>
+    <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0" rootOnly="true"/>
+
+    <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1"  weight="5.0"/>
+    <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" weight="20.0"/>
+    <operator id="CFNarrowExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="true" weight="10.0"/>      
+    <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" weight="5.0"/>
+
+    <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
+"""
+
+parameters = """
+        <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
+        <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}"/>
+        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
+"""
+
+priors = """"""
+_priors = """
+            <prior id="birthRatePrior" name="distribution" x="@birthRate">
+                <Gamma id="Gamma.birthRate" mode="ShapeScale" name="distr" alpha="30.0" beta="0.1"/>
+            </prior>
+"""
+
+[defaults]
+birthRate = 1.5
+pMove = 0.3
+conversionRate = 0.5
