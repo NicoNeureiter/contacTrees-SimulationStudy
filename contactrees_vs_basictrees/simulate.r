@@ -38,49 +38,46 @@ main = function(){
     config_ct = "templates/contactrees.toml"
     config_bt = "templates/basictrees.toml"
 
-    # process_beast_template(
-    #     template_beast,
-    #     config_ct,
-    #     taxa,
-    #     "intermediate/sampling/SAMPLING.xml",
-    #     simulator_params
-    #     )
+    process_beast_template(
+        template_beast,
+        config_ct,
+        taxa,
+        "intermediate/sampling/SAMPLING.xml",
+        simulator_params
+        )
     
-    # # run beast to sample from prior
-    # run_beast("intermediate/sampling/SAMPLING.xml")
+    # run beast to sample from prior
+    run_beast("intermediate/sampling/SAMPLING.xml")
     
-    # # simulate data and reconstruct with contactrees
-    # seqgen_sampling(
-    #     "intermediate/sampling/SAMPLING.log",
-    #     "intermediate/sampling/SAMPLING.trees",
-    #     template_seqgen,
-    #     template_beast,
-    #     config_ct,
-    #     config_ct,
-    #     taxa,
-    #     "intermediate/contactrees/test.xml",
-    #     list(seqlength="10"),
-    #     repeats = repeats
-    # )
+    # simulate data and reconstruct with contactrees
+    seqgen_sampling(
+        "intermediate/sampling/SAMPLING.log",
+        "intermediate/sampling/SAMPLING.trees",
+        template_seqgen,
+        template_beast,
+        config_ct,
+        config_ct,
+        taxa,
+        "intermediate/contactrees/test.xml",
+        list(seqlength="10"),
+        repeats = repeats
+    )
 
-    # # simulate data and reconstruct with basic tree analysis
-    # seqgen_sampling(
-    #     "intermediate/sampling/SAMPLING.log",
-    #     "intermediate/sampling/SAMPLING.trees",
-    #     template_seqgen,
-    #     template_beast,
-    #     config_bt,
-    #     config_bt,
-    #     taxa,
-    #     "intermediate/basictrees/test.xml",
-    #     list(seqlength="10"),
-    #     repeats = repeats
-    # )
-
-    # merge with another template without sampling from prior
-    # run those beast analyses
+    # simulate data and reconstruct with basic tree analysis
+    seqgen_sampling(
+        "intermediate/sampling/SAMPLING.log",
+        "intermediate/sampling/SAMPLING.trees",
+        template_seqgen,
+        template_beast,
+        config_bt,
+        config_bt,
+        taxa,
+        "intermediate/basictrees/test.xml",
+        list(seqlength="10"),
+        repeats = repeats
+    )
+    
     # evaluate
-    
     run_loganalyser("intermediate/contactrees/")
     run_coverage_calculator("intermediate/contactrees/")
     run_loganalyser("intermediate/basictrees/")
