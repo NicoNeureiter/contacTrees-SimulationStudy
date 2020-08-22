@@ -5,7 +5,8 @@
 library("argparser")
 
 import::from("src/beast.r", process_beast_template)
-import::from("src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser, run_coverage_calculator)
+import::from("src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser,
+             run_coverage_calculator, run_acgannotator_all, run_treeannotator_all)
 import::from("src/seqgen.r", seqgen_sampling)
 
 options(scipen=999)
@@ -13,8 +14,8 @@ options(scipen=999)
 SAMPLING.DIR = "intermediate/sampling/"
 
 main = function(){
-    ntax = 5
-    nsamples = 2
+    ntax = 8
+    nsamples = 20
     repeats = 1
 
     mkdir("intermediate/sampling")
@@ -45,10 +46,10 @@ main = function(){
         "intermediate/sampling/SAMPLING.xml",
         simulator_params
         )
-    
+
     # run beast to sample from prior
     run_beast("intermediate/sampling/SAMPLING.xml")
-    
+
     # simulate data and reconstruct with contactrees
     seqgen_sampling(
         "intermediate/sampling/SAMPLING.log",
@@ -59,7 +60,7 @@ main = function(){
         config_ct,
         taxa,
         "intermediate/contactrees/test.xml",
-        list(seqlength="10"),
+        list(seqlength="20"),
         repeats = repeats
     )
 
@@ -73,15 +74,18 @@ main = function(){
         config_bt,
         taxa,
         "intermediate/basictrees/test.xml",
-        list(seqlength="10"),
+        list(seqlength="20"),
         repeats = repeats
     )
     
     # evaluate
     run_loganalyser("intermediate/contactrees/")
     run_coverage_calculator("intermediate/contactrees/")
+    run_acgannotator_all("intermediate/contactrees/")
+
     run_loganalyser("intermediate/basictrees/")
     run_coverage_calculator("intermediate/basictrees/")
+    run_treeannotator_all("intermediate/basictrees/")
     }
 
 make_taxa_names = function(ntax){

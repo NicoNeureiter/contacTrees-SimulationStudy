@@ -58,10 +58,38 @@ run_coverage_calculator = function(dir){
   results_path = paste(dir, "results.tsv", sep="")
   coverage_path = paste(dir, "coverage/", sep="")
   system2("applauncher", 
-          args=c("CoverageCa", 
+          args=c("CoverageCalculator",
                  "-log", samples_path,
                  "-logA", results_path,
                  "-out", coverage_path))
+}
+
+run_treeannotator_all = function(dir){
+  input_file_pattern = "test.*.trees"
+  input_files = list.files(path=dir, pattern=input_file_pattern)
+  for (input_file in input_files) {
+    run_treeannotator(paste(dir, input_file, sep="/"))
+  }
+}
+
+run_treeannotator = function(in_file){
+  out_file = paste(tools::file_path_sans_ext(in_file), "summary", "tree", sep=".")
+  print(in_file)
+  print(out_file)
+  system2("/opt/beast/bin/treeannotator", args=c(in_file, out_file))
+}
+
+run_acgannotator_all = function(dir){
+  input_file_pattern = "test.*.trees"
+  input_files = list.files(path=dir, pattern=input_file_pattern)
+  for (input_file in input_files) {
+    run_acgannotator(paste(dir, input_file, sep="/"))
+  }
+}
+
+run_acgannotator = function(in_file){
+  out_file = paste(tools::file_path_sans_ext(in_file), "summary", "tree", sep=".")
+  system2("applauncher", args=c("ContactreesAnnotator", in_file, out_file))
 }
 
 # similar to mkdir -p
