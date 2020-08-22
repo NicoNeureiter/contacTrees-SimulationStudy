@@ -26,7 +26,6 @@ _operators = """
     <operator id="RestrictedSubtreeSlide" spec="RestrictedSubtreeSlide" weight="25" tree="@acg" clades="@constraints"/>
 
 
-
     <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0"/>
     <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="10.0" rootOnly="true"/>
 
@@ -52,6 +51,6 @@ _priors = """
 """
 
 [defaults]
-birthRate = 1.5
+birthRate = 3.0
 pMove = 0.3
 conversionRate = 0.5
