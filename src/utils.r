@@ -78,7 +78,7 @@ run_treeannotator = function(in_file){
   out_file = paste(tools::file_path_sans_ext(in_file), "summary", "tree", sep=".")
   print(in_file)
   print(out_file)
-  system2("/opt/beast/bin/treeannotator", args=c(in_file, out_file))
+  system2("treeannotator", args=c(in_file, out_file))
 }
 
 run_acgannotator_all = function(dir){
