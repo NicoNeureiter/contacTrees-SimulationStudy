@@ -4,10 +4,10 @@
 # and its evaluation.
 library("argparser")
 
-import::from("src/beast.r", process_beast_template)
-import::from("src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser,
+import::from("../src/beast.r", process_beast_template)
+import::from("../src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser,
              run_coverage_calculator, run_acgannotator_all, run_treeannotator_all)
-import::from("src/seqgen.r", seqgen_sampling)
+import::from("../src/seqgen.r", seqgen_sampling)
 
 options(scipen=999)
 
