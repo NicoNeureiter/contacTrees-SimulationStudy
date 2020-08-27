@@ -47,16 +47,51 @@ run_beast = function(xml){
     print("...... end beast")
     }
 
-run_loganalyser = function(){
-  system2("loganalyser", args=c("-oneline", "intermediate/test.???.001.log", ">", "intermediate/results.tsv"))
+run_loganalyser = function(dir){
+  in_path = paste(dir, "test.???.001.log", sep="")
+  out_path = paste(dir, "results.tsv", sep="")
+  system2("loganalyser", args=c("-oneline", in_path, ">", out_path))
 }
 
-run_coverage_calculator = function(){
+run_coverage_calculator = function(dir){
+  samples_path = "intermediate/sampling/SAMPLING.log"
+  results_path = paste(dir, "results.tsv", sep="")
+  coverage_path = paste(dir, "coverage/", sep="")
+
+  mkdir(coverage_path)
   system2("applauncher", 
-          args=c("CoverageCa", 
-                 "-log", "intermediate/sampling/SAMPLING.log",
-                 "-logA", "intermediate/results.tsv",
-                 "-out", "intermediate/coverage/"))
+          args=c("CoverageCalculator",
+                 "-log", samples_path,
+                 "-logA", results_path,
+                 "-out", coverage_path))
+}
+
+run_treeannotator_all = function(dir){
+  input_file_pattern = "test.*.trees"
+  input_files = list.files(path=dir, pattern=input_file_pattern)
+  for (input_file in input_files) {
+    run_treeannotator(paste(dir, input_file, sep="/"))
+  }
+}
+
+run_treeannotator = function(in_file){
+  out_file = paste(tools::file_path_sans_ext(in_file), "summary", "tree", sep=".")
+  print(in_file)
+  print(out_file)
+  system2("/opt/beast/bin/treeannotator", args=c(in_file, out_file))
+}
+
+run_acgannotator_all = function(dir){
+  input_file_pattern = "test.*.trees"
+  input_files = list.files(path=dir, pattern=input_file_pattern)
+  for (input_file in input_files) {
+    run_acgannotator(paste(dir, input_file, sep="/"))
+  }
+}
+
+run_acgannotator = function(in_file){
+  out_file = paste(tools::file_path_sans_ext(in_file), "summary", "tree", sep=".")
+  system2("applauncher", args=c("ContactreesAnnotator", in_file, out_file))
 }
 
 # similar to mkdir -p

@@ -69,7 +69,6 @@ seqgen_sampling = function( log,
         run.args = list(vars=variables, out=sampling_output)
         all.run.args = list.append(all.run.args, run.args)
     }
-
         
     mclapply(X = all.run.args,
              FUN = function(run.args) seqgen(seqgen_template,
@@ -82,6 +81,7 @@ seqgen_sampling = function( log,
              mc.preschedule = FALSE,
              mc.allow.recursive = FALSE)
     }
+
 
 read_tree_lines = function(trees_path) {
   trees <- list()
