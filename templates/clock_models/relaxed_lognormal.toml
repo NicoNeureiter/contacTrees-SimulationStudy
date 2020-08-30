@@ -1,12 +1,40 @@
+[xml]
 clock_model = """
-<branchRateModel id="RelaxedClock.c:clock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" numberOfDiscreteRates="10" rateCategories="@rateCategories.c:clock" tree="@acg">
-    <LogNormal id="LogNormalDistributionModel.c:clock" meanInRealSpace="true" name="distr">
-        <parameter id="ucldM" spec="parameter.RealParameter" estimate="false" lower="0.0" name="M" upper="1.0">1.0</parameter>
-    <parameter id="ucldStdev.c:clock" spec="parameter.RealParameter" name="S" lower="0.0">0.1</parameter>
-    </LogNormal>
-    <parameter id="ucldMean.c:clock" spec="parameter.RealParameter" estimate="false" name="clock.rate">1.0</parameter>
-</branchRateModel>"""
+<branchRateModel id="clock" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" numberOfDiscreteRates="10" rateCategories="@rateCategories.c:clock" tree="@acg" clock.rate="{{clock_rate}}">
+    <LogNormal meanInRealSpace="true" name="distr" M="1.0" S="@ucldStdev:clock" />
+</branchRateModel>
+"""
+
+parameters = """
+        <stateNode id="ucldStdev:clock" spec="RealParameter" estimate="false" lower="0.0" upper="3.0" value="{{clock_stdev}}"/>
+        <stateNode id="rateCategories.c:clock" spec="parameter.IntegerParameter">1</stateNode>
+"""
+
+priors = """
+
+"""
+
+_priors = """
+
+"""
+
+operators = """
+    <operator id="CategoriesRandomWalk.c:clock" spec="IntRandomWalkOperator" parameter="@rateCategories.c:clock" weight="5.0" windowSize="1"/>
+    <operator id="CategoriesSwapOperator.c:clock" spec="SwapOperator" intparameter="@rateCategories.c:clock" weight="5.0"/>
+    <operator id="CategoriesUniform.c:clock" spec="UniformOperator" parameter="@rateCategories.c:clock" weight="5.0"/>
+"""
+
+_operators = """
+    <operator id="ucldStdevScaler.c:clock" spec="ScaleOperator" parameter="@ucldStdev:clock" scaleFactor="0.5" weight="2.0"/>
+"""
+
 
 logs = """
-        <log branchratemodel="@RelaxedClock.c:clock" id="rate.c:clock" spec="beast.evolution.branchratemodel.RateStatistic" tree="@acg"/>
+        <log branchratemodel="@clock" spec="beast.evolution.branchratemodel.RateStatistic" tree="@acg"/>
+        <log idref="ucldStdev:clock"/>
+        <log idref="rateCategories.c:clock"/>
 """
+
+[defaults]
+clock_rate = 1.0
+clock_stdev = 0.2
