@@ -33,6 +33,8 @@ operators = """
  	          blockSet="@allBlocks" conversionRate="@conversionRate" flip="false" pMove="@pMove"/> 
  	<operator id="ConversionSplitAndFlip.t" spec="ConversionSplit" acg="@acg" weight="3.0" 
  	          blockSet="@allBlocks" conversionRate="@conversionRate" flip="true" pMove="@pMove"/> 
+    <operator id="CFConversionSwap.t" spec="CFConversionSwap" acg="@acg" conversionRate="@conversionRate" 
+                  pMove="@pMove" blockSet="@allBlocks" weight="30.0"/>
 
     <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="25.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
         <plate var="x" range="&blockrange;">
