@@ -43,7 +43,7 @@ settmpwd = function(wd){
 run_beast = function(xml){
     print(paste("...... start beast: ", xml))
     settmpwd(dirname(xml))
-    system2("beast", args=c("-overwrite", "-java", basename(xml)))
+    system2("beast", args=c("-overwrite", basename(xml)))
     print("...... end beast")
     }
 

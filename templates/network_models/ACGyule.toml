@@ -8,7 +8,7 @@ population_model = """
 
 logs = """
         <log idref="birthRate"/>
-        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
+        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks" logGeneFlow="true"/>
         <log idref="conversionRate"/>
         <log idref="pMove"/>
 """
@@ -74,7 +74,7 @@ _priors = """
 """
 
 [defaults]
-birthRate = 4.5
-pMove = 0.15
-conversionRate = 0.4
-expectedConversions = 5.0
+birthRate = 2.5
+pMove = 0.3
+conversionRate = 0.75
+expectedConversions = 25.0
