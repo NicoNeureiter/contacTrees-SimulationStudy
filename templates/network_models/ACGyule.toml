@@ -19,22 +19,24 @@ operators = """
 	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
         </plate>
     </operator>
+"""
+_operators = """
     <operator id="ConvertedEdgeSlide.t" spec="ConvertedEdgeSlide" acg="@acg" weight="25.0"/>
     <operator id="ConvertedEdgeFlip.t" spec="ConvertedEdgeFlip" acg="@acg" weight="5.0"/>
- 	<operator id="ConversionSplit.t" spec="ConversionSplit" acg="@acg" weight="3.0" 
- 	          blockSet="@allBlocks" conversionRate="@conversionRate" flip="false" pMove="@pMove"/>
- 	<operator id="ConversionSplitAndFlip.t" spec="ConversionSplit" acg="@acg" weight="3.0" 
- 	          blockSet="@allBlocks" conversionRate="@conversionRate" flip="true" pMove="@pMove"/>
+    <operator id="ConversionSplit.t" spec="ConversionSplit" acg="@acg" weight="3.0" 
+              blockSet="@allBlocks" conversionRate="@conversionRate" flip="false" pMove="@pMove"/>
+    <operator id="ConversionSplitAndFlip.t" spec="ConversionSplit" acg="@acg" weight="3.0" 
+              blockSet="@allBlocks" conversionRate="@conversionRate" flip="true" pMove="@pMove"/>
     <operator id="CFConversionSwap.t" spec="CFConversionSwap" acg="@acg" conversionRate="@conversionRate" 
                   pMove="@pMove" blockSet="@allBlocks" weight="30.0"/>
 
     <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="25.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
         <plate var="x" range="&blockrange;">
-	        <treeLikelihood idref="treeLikelihood.block$(x)"/>
+            <treeLikelihood idref="treeLikelihood.block$(x)"/>
         </plate>
     </operator>
-"""
-_operators = """
+
+    
     <operator id="ACGscale.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="8.0"/>
     <operator id="ACGscale.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="4.0" rootOnly="true"/>
 
