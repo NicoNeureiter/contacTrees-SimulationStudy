@@ -13,8 +13,8 @@ options(scipen=999)
 SAMPLING.DIR = "intermediate/sampling/"
 
 main = function(){
-    ntax = 8
-    nsamples = 100
+    ntax = 4
+    nsamples = 40
     repeats = 1
 
     mkdir("intermediate/sampling")
@@ -54,7 +54,7 @@ main = function(){
         config,
         taxa,
         "intermediate/test.xml",
-        list(seqlength="50"),
+        list(seqlength="200"),
         repeats = repeats
     )
     # merge with another template without sampling from prior
@@ -63,7 +63,7 @@ main = function(){
     
     run_loganalyser("intermediate/")
     run_coverage_calculator("intermediate/")
-    run_acgannotator_all("intermediate/")
+    # run_acgannotator_all("intermediate/")
     }
 
 make_taxa_names = function(ntax){
