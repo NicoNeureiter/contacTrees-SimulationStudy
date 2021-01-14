@@ -19,15 +19,15 @@ operators = """
             <treeLikelihood idref="treeLikelihood.block$(x)"/>
         </plate>
     </operator>
-"""
-
-_operators = """
     <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="25.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
         <plate var="x" range="&blockrange;">
             <treeLikelihood idref="treeLikelihood.block$(x)"/>
         </plate>
     </operator>
     <operator id="ConvertedEdgeSlide.t" spec="ConvertedEdgeSlide" acg="@acg" weight="25.0"/>
+"""
+
+_operators = """
     <operator id="ConvertedEdgeFlip.t" spec="ConvertedEdgeFlip" acg="@acg" weight="5.0"/>
     <operator id="ConversionSplit.t" spec="ConversionSplit" acg="@acg" weight="3.0" 
               blockSet="@allBlocks" conversionRate="@conversionRate" flip="false" pMove="@pMove"/>
@@ -53,11 +53,11 @@ _operators = """
 parameters = """
         <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
         <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}"/>
-        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
-"""
-_parameters = """
         <stateNode id="expectedConversions" spec="RealParameter" estimate="false" value="{{expectedConversions}}"/>
         <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg"/>
+"""
+_parameters = """
+        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
 """
 
 priors = """
@@ -75,7 +75,7 @@ _priors = """
 """
 
 [defaults]
-birthRate = 1.5
-pMove = 0.3
-conversionRate = 1.5
-expectedConversions = 10.0
+birthRate = 3.0
+pMove = 0.15
+conversionRate = 0.5
+expectedConversions = 3.0
