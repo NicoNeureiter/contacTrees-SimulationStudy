@@ -14,6 +14,12 @@ logs = """
 """
 
 operators = """
+    <operator id="AddRemoveConversion.t" spec="AddRemoveConversionGibbs" weight="25.0" acg="@acg" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks">
+        <plate var="x" range="&blockrange;">
+            <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+
     <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="25.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
         <plate var="x" range="&blockrange;">
             <treeLikelihood idref="treeLikelihood.block$(x)"/>
@@ -46,11 +52,6 @@ operators = """
 """
 
 _operators = """
-    <operator id="AddRemoveConversion.t" spec="AddRemoveConversionGibbs" weight="25.0" acg="@acg" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks">
-        <plate var="x" range="&blockrange;">
-            <treeLikelihood idref="treeLikelihood.block$(x)"/>
-        </plate>
-    </operator>
 
     <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
 
