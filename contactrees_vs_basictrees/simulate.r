@@ -5,8 +5,7 @@
 library("argparser")
 
 import::from("../src/beast.r", process_beast_template)
-import::from("../src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser,
-             run_coverage_calculator, run_acgannotator_all, run_treeannotator_all)
+import::from("../src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser, run_coverage_calculator, run_acgannotator_all, run_treeannotator_all)
 import::from("../src/seqgen.r", seqgen_sampling)
 
 options(scipen=999)
@@ -14,8 +13,8 @@ options(scipen=999)
 SAMPLING.DIR = "intermediate/sampling/"
 
 main = function(){
-    ntax = 8
-    nsamples = 20
+    ntax = 10
+    nsamples = 30
     repeats = 1
 
     mkdir("intermediate/sampling")
@@ -81,11 +80,11 @@ main = function(){
     # evaluate
     run_loganalyser("intermediate/contactrees/")
     run_coverage_calculator("intermediate/contactrees/")
-    run_acgannotator_all("intermediate/contactrees/")
+    # run_acgannotator_all("intermediate/contactrees/")
 
     run_loganalyser("intermediate/basictrees/")
     run_coverage_calculator("intermediate/basictrees/")
-    run_treeannotator_all("intermediate/basictrees/")
+    # run_treeannotator_all("intermediate/basictrees/")
     }
 
 make_taxa_names = function(ntax){

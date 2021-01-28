@@ -7,7 +7,7 @@ population_model = "network_models/ACG_Yule.toml"
 clock_model = "clock_models/strict.toml"
 
 [defaults]
-chain_length = 50000000
+chain_length = 5000000
 log_every =  10000
 sample_from_prior = false
 seqlength = 20

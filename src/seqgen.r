@@ -59,7 +59,7 @@ seqgen_sampling = function( log,
     all.run.args = list()
     
     for(i in seq_along(trees)){
-        variables = to_list(log[i,])
+        variables = as.list(log[i,])
         variables[["tree"]] = trees[[i]]
         variables[["taxa"]] = taxa
         

@@ -42,7 +42,7 @@
 <!-- BLOCK-SET DECLARATION -->
 <stateNode spec="BlockSet" id="allBlocks" network="@acg">
 	<plate var="x" range="&blockrange;">
-		<block spec="Block" id="block$(x)"/>
+		<block spec="Block" id="block$(x).sim"/>
 	</plate>
 </stateNode>
 
@@ -56,6 +56,19 @@
 <!-- STATE -->
 <stateNode id="acg" spec="ConversionGraph">
     <taxonset id="taxa" spec="TaxonSet" alignment="@simulated.block.0"/>
+    <trait id="dateTrait.t:acg" spec="beast.evolution.tree.TraitSet" traitname="date-backward">
+        1 = 0.0,
+        2 = 0.05,
+        3 = 0.1,
+        4 = 0.15,
+        5 = 0.2,
+        6 = 0.25,
+        7 = 0.3,
+        8 = 0.35,
+        9 = 0.4,
+        10 = 0.5
+        <taxa idref="taxa"/>
+    </trait>
 </stateNode>
 {{#parameters}}
 {{{.}}}

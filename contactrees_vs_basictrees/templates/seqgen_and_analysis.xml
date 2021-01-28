@@ -56,7 +56,7 @@
 	    <frequencies id="estimatedFreqs.sim" spec="Frequencies" frequencies="0.5 0.5"/>
 	</substModel>
 </siteModel>
-<branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="1.0"/>
+<branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="{{clockRate}}"/>
 
 <!-- SIMULATED DATA -->
 <plate var="x" range="&blockrange;">
@@ -86,7 +86,7 @@
 <siteModel id="siteModel" spec="SiteModel">
 {{{substitution_model}}}
 </siteModel>
-<branchRateModel id="clock" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="1.0"/>
+{{{clock_model}}}
 
 <!-- MCMC -->
 <run id="mcmc" spec="MCMC" chainLength="{{chain_length}}" sampleFromPrior="{{sample_from_prior}}">
@@ -96,7 +96,20 @@
         <!--
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
         -->
-        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true">
+            <trait id="dateTrait.t:acg" spec="beast.evolution.tree.TraitSet" traitname="date-backward" taxa="@taxa">
+                1 = 0.0,
+                2 = 0.05,
+                3 = 0.1,
+                4 = 0.15,
+                5 = 0.2,
+                6 = 0.25,
+                7 = 0.3,
+                8 = 0.35,
+                9 = 0.4,
+                10 = 0.5
+            </trait>
+        </stateNode>
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x)"/>
         </plate>
