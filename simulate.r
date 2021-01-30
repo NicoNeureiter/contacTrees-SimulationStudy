@@ -28,13 +28,13 @@ main = function(){
         "nsamples" = 1 + nsamples
         )
     
-    template_beast = "templates/direct_simulator.xml"
+    template_simulator = "templates/direct_simulator.xml"
     template_seqgen = "templates/seqgen_and_analysis.xml"
 
     config = "templates/contactrees.toml"
 
     process_beast_template(
-        template_beast,
+        template_simulator,
         config,
         taxa,
         "intermediate/sampling/SAMPLING.xml",
@@ -49,7 +49,6 @@ main = function(){
         "intermediate/sampling/SAMPLING.log",
         "intermediate/sampling/SAMPLING.trees",
         template_seqgen,
-        template_beast,
         config,
         config,
         taxa,
