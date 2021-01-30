@@ -104,7 +104,7 @@
 
 
     <!-- LOGGERS -->
-    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="10000"
+    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="50000"
             sanitiseHeaders="true" sort="smart">
         <log idref="prior"/>
 {{#logs}}
@@ -112,14 +112,14 @@
 {{/logs}}
     </logger>
 
-    <logger id="screenlog" spec="Logger" logEvery="10000">
+    <logger id="screenlog" spec="Logger" logEvery="50000">
         <log idref="prior"/>
 {{#logs}}
 {{{.}}}
 {{/logs}}
     </logger>
 
-    <logger spec="Logger" fileName="$(filebase).trees" logEvery="10000" mode="tree">
+    <logger spec="Logger" fileName="$(filebase).trees" logEvery="50000" mode="tree">
     	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
     </logger>
 </run>
