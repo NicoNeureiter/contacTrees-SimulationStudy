@@ -7,10 +7,14 @@ parameters = """
 """
 priors = """
             <prior id="clockRatePrior" name="distribution" x="@clockRate">
-                <Gamma id="Gamma.clockRate" mode="ShapeScale" name="distr" alpha="1.5" beta="0.67"/>
+                <Uniform id="Uniform.clockRate" name="distr" lower="0.2" upper="2.0"/>
+                <!--Gamma id="Gamma.clockRate" mode="ShapeScale" name="distr" alpha="1.5" beta="0.67"/-->
             </prior>
 """
 operators = """
+    <operator id="clockRateScaler" spec="ScaleOperator" parameter="@clockRate" scaleFactor="0.5" weight="5.0"/>
+"""
+priorOperators = """
     <operator id="clockRateScaler" spec="ScaleOperator" parameter="@clockRate" scaleFactor="0.5" weight="5.0"/>
 """
 logs = """

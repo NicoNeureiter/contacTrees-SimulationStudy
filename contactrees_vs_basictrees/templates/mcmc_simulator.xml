@@ -6,14 +6,19 @@
        namespace='beast.evolution.tree
                  :beast.evolution.tree.coalescent
                  :beast.evolution.alignment
+                 :beast.evolution.operators
                  :beast.evolution.sitemodel
                  :beast.evolution.substitutionmodel
                  :beast.math.distributions
+
+                 :beast.evolution.nuc
                  :beast.core
+                 :beast.core.util
                  :beast.core.parameter
                  :contactrees
                  :contactrees.model
-                 :contactrees.util'>
+                 :contactrees.util
+                 :contactrees.operators'>
 
 <taxonset id="taxa" spec="TaxonSet">
     {{#taxa}}
@@ -58,19 +63,27 @@
 {{{clock_model}}}
 
 
-<!-- STATE -->
-<stateNode id="acg" spec="ConversionGraph">
-    <taxonset idref="taxa"/>
-</stateNode>
+<!-- MCMC -->
+<run id="mcmc" spec="MCMC" chainLength="{{chain_length}}" >
+
+
+    <!-- STATE -->
+    <state id="state" storeEvery="10000">
+        <!--
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
+        -->
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" />
+        <plate var="x" range="&blockrange;">
+            <stateNode idref="block$(x).sim"/>
+        </plate>
+
 {{#parameters}}
 {{{.}}}
 {{/parameters}}
+    </state>
 
-<!-- MCMC -->
-<run spec="DirectSimulator" nSamples="{{nsamples}}">
-
-
- 	
+    <!-- INITIALIZER -->
+    <init id="RandomACG" spec="beast.evolution.tree.SimpleRandomTree" estimate="false" initial="@acg" taxa="@simulated.block.0" rootHeight="1.0" limitCalibrations="0.6" branchMean="0.1" />
 
     <!-- PRIOR -->
     <distribution id="prior" spec="util.CompoundDistribution">
@@ -83,9 +96,15 @@
 
     </distribution>
 
+    
+    <!-- Operators -->
+{{#priorOperators}}
+{{{.}}}
+{{/priorOperators}}
+
 
     <!-- LOGGERS -->
-    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="1"
+    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="10000"
             sanitiseHeaders="true" sort="smart">
         <log idref="prior"/>
 {{#logs}}
@@ -93,14 +112,14 @@
 {{/logs}}
     </logger>
 
-    <logger id="screenlog" spec="Logger" logEvery="1">
+    <logger id="screenlog" spec="Logger" logEvery="10000">
         <log idref="prior"/>
 {{#logs}}
 {{{.}}}
 {{/logs}}
     </logger>
 
-    <logger spec="Logger" fileName="$(filebase).trees" logEvery="1" mode="tree">
+    <logger spec="Logger" fileName="$(filebase).trees" logEvery="10000" mode="tree">
     	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
     </logger>
 </run>

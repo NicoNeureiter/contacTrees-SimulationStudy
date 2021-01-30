@@ -9,6 +9,7 @@
                  :beast.evolution.operators
                  :beast.evolution.sitemodel
                  :beast.evolution.substitutionmodel
+                 :beast.math.distributions
                  :beast.evolution.likelihood
                  :beast.evolution.nuc
                  :beast.core
@@ -96,20 +97,7 @@
         <!--
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
         -->
-        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true">
-            <trait id="dateTrait.t:acg" spec="beast.evolution.tree.TraitSet" traitname="date-backward" taxa="@taxa">
-                1 = 0.0,
-                2 = 0.05,
-                3 = 0.1,
-                4 = 0.15,
-                5 = 0.2,
-                6 = 0.25,
-                7 = 0.3,
-                8 = 0.35,
-                9 = 0.4,
-                10 = 0.5
-            </trait>
-        </stateNode>
+        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x)"/>
         </plate>

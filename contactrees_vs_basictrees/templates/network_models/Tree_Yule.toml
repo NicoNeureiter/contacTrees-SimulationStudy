@@ -1,6 +1,23 @@
 [xml]
 population_model = """
-            <distribution id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false"/>
+            <distribution id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false" />
+
+            <distribution id="clade12.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade12" spec="TaxonSet">
+                <taxon idref="1" />
+                <taxon idref="2" />
+              </taxonset>
+              <distr id="tmrca.clade12.prior" spec="Normal" mean="0.2" sigma="0.02"/>
+            </distribution>
+
+            <distribution id="clade345.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade345" spec="TaxonSet">
+                <taxon idref="3" />
+                <taxon idref="4" />
+                <taxon idref="5" />
+              </taxonset>
+              <distr id="tmrca.clade345.prior" spec="Normal" mean="0.4" sigma="0.02"/>
+            </distribution>
 """
 
 logs = """
@@ -51,6 +68,6 @@ _priors = """
 """
 
 [defaults]
-birthRate = 3.0
+birthRate = 2.5
 pMove = 0.3
-conversionRate = 0.5
+conversionRate = 0.4

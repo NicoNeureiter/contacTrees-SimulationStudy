@@ -29,17 +29,19 @@ main = function(){
     simulator_params = list(
         "sample_from_prior" = "true",
         "taxa" = taxa,
-        "nsamples" = 1 + nsamples
+        "nsamples" = 1 + nsamples,
+        "chain_length" = 1 + 50000*nsamples
         )
     
-    template_beast = "templates/direct_simulator.xml"
+    # template_simulator = "templates/direct_simulator.xml"
+    template_simulator = "templates/mcmc_simulator.xml"
     template_seqgen = "templates/seqgen_and_analysis.xml"
 
     config_ct = "templates/contactrees.toml"
     config_bt = "templates/basictrees.toml"
 
     process_beast_template(
-        template_beast,
+        template_simulator,
         config_ct,
         taxa,
         "intermediate/sampling/SAMPLING.xml",
@@ -54,7 +56,6 @@ main = function(){
         "intermediate/sampling/SAMPLING.log",
         "intermediate/sampling/SAMPLING.trees",
         template_seqgen,
-        template_beast,
         config_ct,
         config_ct,
         taxa,
@@ -68,7 +69,6 @@ main = function(){
         "intermediate/sampling/SAMPLING.log",
         "intermediate/sampling/SAMPLING.trees",
         template_seqgen,
-        template_beast,
         config_bt,
         config_bt,
         taxa,
