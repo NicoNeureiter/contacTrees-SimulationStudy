@@ -56,6 +56,12 @@
 	    <frequencies id="estimatedFreqs.sim" spec="Frequencies" frequencies="0.5 0.5"/>
 	</substModel>
 </siteModel>
+
+
+<branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@acg.sim" clock.rate="{{clockRate}}">
+    <rates id="branchRates.sim" spec="RealParameter">{{branchRates}}</rates>
+    <LogNormal id="logNormal:ucldStdev:clock.sim" meanInRealSpace="true" name="distr" M="1.0" S="@ucldStdev:clock" />
+</branchRateModel>
 <!-- 
     TODO: Add separate clock model for simulations 
     OLD:  <branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="1.0"/>
@@ -65,7 +71,7 @@
 <plate var="x" range="&blockrange;">
 	<data spec='beast.app.seqgen.SimulatedAlignment' id="simulated.block.$(x)" sequencelength="{{seqlength}}"  dataType="binary"
 		  siteModel="@siteModel.sim" outputFileName="{{sequence_output}}">
-		<tree id="marginalTree.sim.$(x)" spec="MarginalTree" network="@acg.sim" block="@block$(x).sim" nodetype="contactrees.MarginalNode" branchRateModel="@clock"/> 
+		<tree id="marginalTree.sim.$(x)" spec="MarginalTree" network="@acg.sim" block="@block$(x).sim" branchRateModel="@clock.sim" />
 	    <data spec="Alignment" dataType="binary">
 	        {{#taxa}}
 	        <sequence taxon="{{.}}" totalcount="2">?</sequence>
@@ -130,7 +136,7 @@
         <distribution id="likelihood" spec="util.CompoundDistribution">
             <plate var="x" range="&blockrange;">
                 <distribution id="treeLikelihood.block$(x)" spec="TreeLikelihood" siteModel="@siteModel" data="@simulated.block.$(x)">
-                    <tree id="marginalTree.$(x)" spec="MarginalTree" network="@acg" block="@block$(x)" nodetype="contactrees.MarginalNode" branchRateModel="@clock"/>
+                    <tree id="marginalTree.$(x)" spec="MarginalTree" network="@acg" block="@block$(x)" branchRateModel="@clock"/>
                 </distribution>
             </plate>
             

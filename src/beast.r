@@ -5,7 +5,7 @@ require("RcppTOML")
 require("whisker")
 require("rlist")
 
-import::from("utils.r", process_template, settmpwd)
+import::here("utils.r", process_template, settmpwd)
 
 process_beast_template = function(template, config, taxa, output, parameters=NULL){
     toml = parseTOML(config, parameters)

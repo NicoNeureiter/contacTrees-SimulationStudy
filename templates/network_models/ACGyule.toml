@@ -8,7 +8,7 @@ population_model = """
 
 logs = """
         <log idref="birthRate"/>
-        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks" logGeneFlow="false"/>
+        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
         <log idref="conversionRate"/>
         <log idref="pMove"/>
 """
@@ -61,11 +61,11 @@ _operators = """
 parameters = """
         <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
         <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}"/>
-        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
-"""
-_parameters = """
         <stateNode id="expectedConversions" spec="RealParameter" estimate="false" value="{{expectedConversions}}"/>
         <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg"/>
+"""
+_parameters = """
+        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
 """
 
 priors = """
@@ -83,7 +83,7 @@ _priors = """
 """
 
 [defaults]
-birthRate = 2.5
+birthRate = 2.0
 pMove = 0.15
 conversionRate = 2.0
 expectedConversions = 3.0

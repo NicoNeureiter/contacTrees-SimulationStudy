@@ -4,9 +4,9 @@
 # and its evaluation.
 library("argparser")
 
-import::from("src/beast.r", process_beast_template)
-import::from("src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser, run_coverage_calculator, run_acgannotator_all)
-import::from("src/seqgen.r", seqgen_sampling)
+import::here("src/beast.r", process_beast_template)
+import::here("src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser, run_coverage_calculator, run_acgannotator_all)
+import::here("src/seqgen.r", seqgen_sampling)
 
 options(scipen=999)
 
@@ -53,7 +53,7 @@ main = function(){
         config,
         taxa,
         "intermediate/test.xml",
-        list(seqlength="10"),
+        list(seqlength="30"),
         repeats = repeats
     )
     # merge with another template without sampling from prior

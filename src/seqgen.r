@@ -5,12 +5,12 @@ require("ape")
 require("tools")
 library("magrittr")
 
-import::from("beast.r", merge, process_beast_template)
-import::from("utils.r", run_beast)
-import::from("stringr", str_pad)
-import::from("icesTAF", mkdir)
-import::from("rlist", list.append)
-import::from("parallel", mclapply)
+import::here("beast.r", merge, process_beast_template)
+import::here("utils.r", run_beast)
+import::here("stringr", str_pad)
+import::here("icesTAF", mkdir)
+import::here("rlist", list.append)
+import::here("parallel", mclapply)
 
 seqgen = function(seqgen_template,
                   seqgen_config,
@@ -57,6 +57,9 @@ seqgen_sampling = function( log,
     
     all.run.args = list()
     
+    n.taxa = length(taxa)
+    n.nodes = 2 * n.taxa - 1
+
     for(i in seq_along(trees)){
         variables = as.list(log[i,])
         variables[["tree"]] = trees[[i]]
@@ -64,6 +67,14 @@ seqgen_sampling = function( log,
         
         variables = merge(variables, parameters)
         sampling_output = repeat_path(output, i)
+
+        if ("branchRates.1" %in% names(variables)) {
+            branchRates = list()
+            for (i in 1:(n.nodes-1)) {
+                branchRates = list.append(branchRates, variables[[paste("branchRates", i, sep=".")]])
+            }
+        }
+        variables[["branchRates"]] = paste(branchRates, collapse = ' ')
         
         run.args = list(vars=variables, out=sampling_output)
         all.run.args = list.append(all.run.args, run.args)
