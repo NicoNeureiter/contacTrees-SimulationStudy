@@ -62,7 +62,7 @@ parameters = """
         <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
         <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}"/>
         <stateNode id="expectedConversions" spec="RealParameter" estimate="false" value="{{expectedConversions}}"/>
-        <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg"/>
+        <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg" linearContactGrowth="true" />
 """
 _parameters = """
         <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
@@ -83,7 +83,7 @@ _priors = """
 """
 
 [defaults]
-birthRate = 2.0
+birthRate = 2.5
 pMove = 0.15
 conversionRate = 2.0
-expectedConversions = 3.0
+expectedConversions = 4.0

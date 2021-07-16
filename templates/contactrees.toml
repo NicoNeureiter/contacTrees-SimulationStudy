@@ -7,7 +7,7 @@ population_model = "network_models/ACGyule.toml"
 clock_model = "clock_models/relaxed_lognormal.toml"
 
 [defaults]
-chain_length = 200000
-log_every = 200
+chain_length = 3000000
+log_every = 1000
 sample_from_prior = false
-seqlength = 30
+seqlength = 100

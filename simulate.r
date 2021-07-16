@@ -13,7 +13,7 @@ options(scipen=999)
 SAMPLING.DIR = "intermediate/sampling/"
 
 main = function(){
-    ntax = 8
+    ntax = 12
     nsamples = 100
     repeats = 1
 
@@ -53,7 +53,7 @@ main = function(){
         config,
         taxa,
         "intermediate/test.xml",
-        list(seqlength="30"),
+        list(seqlength="100"),
         repeats = repeats
     )
     # merge with another template without sampling from prior
