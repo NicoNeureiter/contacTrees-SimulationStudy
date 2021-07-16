@@ -1,16 +1,14 @@
 # seqgen.r
 #
 # simulate sequences based on parameter values
-require("ape")
-require("tools")
-library("magrittr")
 
-import::here("beast.r", merge, process_beast_template)
-import::here("utils.r", run_beast)
-import::here("stringr", str_pad)
-import::here("icesTAF", mkdir)
-import::here("rlist", list.append)
-import::here("parallel", mclapply)
+import::here(.from="beast.r", merge, process_beast_template)
+import::here(.from="utils.r", run_beast)
+import::here(.from="stringr", str_pad)
+import::here(.from="icesTAF", mkdir)
+import::here(.from="rlist", list.append)
+import::here(.from="parallel", mclapply)
+import::here(.from="tools", file_path_sans_ext, file_ext)
 
 seqgen = function(seqgen_template,
                   seqgen_config,
@@ -75,7 +73,7 @@ seqgen_sampling = function( log,
             }
         }
         variables[["branchRates"]] = paste(branchRates, collapse = ' ')
-        
+
         run.args = list(vars=variables, out=sampling_output)
         all.run.args = list.append(all.run.args, run.args)
     }
@@ -121,12 +119,12 @@ normalize_path = function(x){
 
 repeat_path = function(path, i){
     i_padded = str_pad(i, 3, pad="0")
-    paste(tools::file_path_sans_ext(path), i_padded, tools::file_ext(path), sep=".")
+    paste(file_path_sans_ext(path), i_padded, file_ext(path), sep=".")
 }
 
 
 buid_seq_output = function(path){
-  path_stripped <- tools::file_path_sans_ext(path)
+  path_stripped <- file_path_sans_ext(path)
   seq_dir <- paste(path_stripped, ".data/", sep="")
   mkdir(seq_dir)
   paste(seq_dir, "block$(x).xml", sep="")

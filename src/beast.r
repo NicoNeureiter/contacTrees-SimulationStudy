@@ -1,14 +1,14 @@
 # beast.r
 #
 # generate XML for BEAST
-require("RcppTOML")
-require("whisker")
-require("rlist")
 
-import::here("utils.r", process_template, settmpwd)
+import::here(.from="utils.r", process_template, settmpwd)
+import::here(.from="RcppTOML", parseTOML)
+import::here(.from="whisker", whisker.render)
+import::here(.from="rlist", list.merge)
 
 process_beast_template = function(template, config, taxa, output, parameters=NULL){
-    toml = parseTOML(config, parameters)
+    toml = parseConfig(config, parameters)
     data = toml$data
     defaults = toml$defaults
 
@@ -44,7 +44,7 @@ merge = function(list1, list2){
         return(list2)
     if(is.empty(list2))
         return(list1)
-    rlist::list.merge(list1, list2)
+    list.merge(list1, list2)
     }
 
 
@@ -56,8 +56,8 @@ is.empty = function(x){
 
 # each TOML consist of XML chunks, path to subtemplates and default parameters
 # for all chunks or any subtemplate
-parseTOML = function(file, defaults=NULL){
-    toml = RcppTOML::parseTOML(file, escape=FALSE)
+parseConfig = function(file, defaults=NULL){
+    toml = parseTOML(file, escape=FALSE)
     settmpwd(dirname(file))
 
     defaults = merge(toml$defaults, defaults)
@@ -73,12 +73,12 @@ parseTOML = function(file, defaults=NULL){
 process_subtemplates = function(subtemplates, defaults){  
     data = list()
     for(subtemplate in subtemplates){
-        data = add(data, parseTOML(subtemplate, defaults)$data)
+        data = add(data, parseConfig(subtemplate, defaults)$data)
         }
     data
     }
 
 
 process_xml_chunks = function(xml_chunks, defaults){
-    lapply(xml_chunks, whisker::whisker.render, data=defaults)
+    lapply(xml_chunks, whisker.render, data=defaults)
     }

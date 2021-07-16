@@ -4,9 +4,9 @@
 # and its evaluation.
 library("argparser")
 
-import::here("src/beast.r", process_beast_template)
-import::here("src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser, run_coverage_calculator, run_acgannotator_all)
-import::here("src/seqgen.r", seqgen_sampling)
+import::here(.from="src/beast.r", process_beast_template)
+import::here(.from="src/utils.r", settmpwd, mkdir, run_beast, run_loganalyser, run_coverage_calculator, run_acgannotator_all)
+import::here(.from="src/seqgen.r", seqgen_sampling)
 
 options(scipen=999)
 
