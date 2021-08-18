@@ -1,5 +1,5 @@
 # Contactrees simulation study
-A well callibrated simulation study to test the contactrees model.
+A well callibrated simulation study to test the contacTrees model (https://github.com/NicoNeureiter/contacTrees).
 
 ## Steps:
 * sample random parameters, tree and contact edges from prior distribution
