@@ -22,8 +22,8 @@ _priors = """
 """
 
 operators = """
-    <operator id="branchRatesRandomWalk" spec="RealRandomWalkOperator" parameter="@branchRates" windowSize="0.1" weight="5.0"/>
-    <operator id="branchRatesScaleOperator" spec="ScaleOperator" parameter="@branchRates" scaleFactor="0.7" weight="5.0"/>
+    <operator id="branchRatesRandomWalk" spec="RealRandomWalkOperator" parameter="@branchRates" windowSize="0.2" weight="5.0"/>
+    <operator id="branchRatesScaleOperator" spec="ScaleOperator" parameter="@branchRates" scaleFactor="0.6" weight="8.0"/>
     <operator id="RatesSwapOperator" spec="SwapOperator" parameter="@branchRates" weight="2.0"/>
 """
 
@@ -35,9 +35,9 @@ _operators = """
 
 
 logs = """
+        <log idref="clockRate"/>
         <log idref="ucldStdev:clock"/>
         <log idref="branchRates"/>
-        <log idref="clockRate"/>
 """
 
 _logs = """

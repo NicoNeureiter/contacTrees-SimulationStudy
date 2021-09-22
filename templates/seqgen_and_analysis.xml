@@ -106,6 +106,7 @@
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
         -->
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
+        
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x)"/>
         </plate>
@@ -115,9 +116,9 @@
 {{/parameters}}
  	</state>
  	
-    <!-- INITIALIZER
- 	<init id="RandomACG" spec="beast.evolution.tree.SimpleRandomTree" estimate="false" initial="@acg" taxa="@simulated.block.0"/>
-    -->
+    <!-- INITIALIZER -->
+ 	<!--init id="RandomACG" spec="beast.evolution.tree.SimpleRandomTree" estimate="false" initial="@acg" taxa="@simulated.block.0"/-->
+    
 
 	<!-- POSTERIOR -->
    <distribution id="posterior" spec="util.CompoundDistribution">
@@ -152,7 +153,11 @@
     <!-- Loggers -->
     <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="{{log_every}}"
             sanitiseHeaders="true" sort="smart">
-        <log idref="prior"/>
+        <log idref="prior"/>        
+        <log id="treeDistance" spec="beast.evolution.tree.TreeDistanceLogger" tree="@acg">
+            <ref id="acg.groundtruth" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
+        </log>
+
 {{#logs}}
 {{{.}}}
 {{/logs}}
@@ -162,13 +167,18 @@
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
+        <log idref="treeDistance"/>
 {{#logs}}
 {{{.}}}
 {{/logs}}
     </logger>
 
     <logger spec="Logger" fileName="$(filebase).trees" logEvery="{{log_every}}" mode="tree">
-    	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
+        <log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
+    </logger>
+
+    <logger spec="Logger" fileName="$(filebase).cf.trees" logEvery="{{log_every}}" mode="tree">
+        <log idref="acg"/>
     </logger>
 </run>
 
