@@ -20,7 +20,8 @@ seqgen = function(seqgen_template,
     output = normalize_path(output)
 
     for(i in seq_len(repeats)){
-        repeat_output = repeat_path(output, i) # some temp path
+        # repeat_output = repeat_path(output, i) # some temp path
+        repeat_output = output
         parameters[["sequence_output"]] = buid_seq_output(repeat_output)
         process_beast_template(
             seqgen_template,

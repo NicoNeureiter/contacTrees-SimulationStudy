@@ -43,12 +43,16 @@ settmpwd = function(wd){
 run_beast = function(xml){
     print(paste("...... start beast: ", xml))
     settmpwd(dirname(xml))
-    system2("beast", args=c("-overwrite", basename(xml)))
+    system2(
+      command="beast",
+      args=c("-overwrite", basename(xml)),
+      stdout=paste(basename(xml), ".screenlog", sep="")
+    )
     print("...... end beast")
     }
 
 run_loganalyser = function(dir){
-  in_path = paste(dir, "test.???.001.log", sep="")
+  in_path = paste(dir, "test.???.log", sep="")
   out_path = paste(dir, "results.tsv", sep="")
   system2("loganalyser", args=c("-oneline", in_path, ">", out_path))
 }
