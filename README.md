@@ -1,5 +1,5 @@
 # Contactrees simulation study
-A well callibrated simulation study to test the contactrees model.
+A well callibrated simulation study to test the contacTrees model (https://github.com/NicoNeureiter/contacTrees).
 
 ## Steps:
 * sample random parameters, tree and contact edges from prior distribution
@@ -18,7 +18,7 @@ A well callibrated simulation study to test the contactrees model.
 ### Contact rate
 * Fixed contact rate
 * Constant estimated contact rate
-### Borrowing probability (per word and contact rate)
+### Borrowing probability (per word and contact edge)
 * Fixed borrowing probability
 * Constant estimated borrowing probability
 * Borrowing probability varrying between words
