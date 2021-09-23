@@ -13,8 +13,9 @@ options(scipen=999)
 SAMPLING.DIR = "intermediate/sampling/"
 
 main = function(){
-    ntax = 10
-    nsamples = 30
+    ntax = 15
+    nsamples = 40
+    simu_sample_interval = 50000
     repeats = 1
 
     mkdir("intermediate/sampling")
@@ -30,7 +31,8 @@ main = function(){
         "sample_from_prior" = "true",
         "taxa" = taxa,
         "nsamples" = 1 + nsamples,
-        "chain_length" = 1 + 50000*nsamples
+        "chain_length" = 1 + simu_sample_interval*nsamples,
+        "sample_interval" = simu_sample_interval
         )
     
     # template_simulator = "templates/direct_simulator.xml"
@@ -73,7 +75,7 @@ main = function(){
         config_bt,
         taxa,
         "intermediate/basictrees/test.xml",
-        list(seqlength="20"),
+        list(seqlength="10"),
         repeats = repeats
     )
     

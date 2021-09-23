@@ -30,7 +30,6 @@
 </plate>
 
 
-
 <!-- MAP BLOCK -->
 <map name="Uniform">beast.math.distributions.Uniform</map>
 <map name="Exponential">beast.math.distributions.Exponential</map>
@@ -101,7 +100,7 @@
     </logger>
 
     <logger spec="Logger" fileName="$(filebase).trees" logEvery="1" mode="tree">
-    	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
+        <log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks" branchratemodel="@clock"/>
     </logger>
 </run>
   

@@ -72,8 +72,8 @@ seqgen_sampling = function( log,
             for (i in 1:(n.nodes-1)) {
                 branchRates = list.append(branchRates, variables[[paste("branchRates", i, sep=".")]])
             }
+            variables[["branchRates"]] = paste(branchRates, collapse = ' ')
         }
-        variables[["branchRates"]] = paste(branchRates, collapse = ' ')
 
         run.args = list(vars=variables, out=sampling_output)
         all.run.args = list.append(all.run.args, run.args)

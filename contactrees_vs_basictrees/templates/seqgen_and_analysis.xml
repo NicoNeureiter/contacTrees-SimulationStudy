@@ -41,35 +41,36 @@
 
 <!-- REFERENCE BLOCK-SET -->
 <blockSet id="blockSet.sim" spec="contactrees.BlockSet" deferNetworkSpecification="true">
-	<plate var="x" range="&blockrange;">
-		<block spec="contactrees.Block" id="block$(x).sim"/>
-	</plate>
+    <plate var="x" range="&blockrange;">
+        <block spec="contactrees.Block" id="block$(x).sim"/>
+    </plate>
 </blockSet>
 
 <!-- REFERENCE TREE -->
 <tree id="acg.sim" spec="contactrees.ACGWithBlocks" taxonset="@taxa" blockSet="@blockSet.sim"
-	newick="{{tree}}"/>
+    newick="{{tree}}"/>
 
 <!-- SITE AND CLOCK-MODEL -->
 <siteModel id="siteModel.sim" spec="SiteModel">
-	<substModel id="binaryCTMC.sim" spec="GeneralSubstitutionModel">
-	    <parameter dimension="2" estimate="false" id="rates.binaryCTMC.sim" name="rates">1.0 1.0</parameter>
-	    <frequencies id="estimatedFreqs.sim" spec="Frequencies" frequencies="0.5 0.5"/>
-	</substModel>
+    <substModel id="binaryCTMC.sim" spec="GeneralSubstitutionModel">
+        <parameter dimension="2" estimate="false" id="rates.binaryCTMC.sim" name="rates">1.0 1.0</parameter>
+        <frequencies id="estimatedFreqs.sim" spec="Frequencies" frequencies="0.5 0.5"/>
+    </substModel>
 </siteModel>
+
 <branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="{{clockRate}}"/>
 
 <!-- SIMULATED DATA -->
 <plate var="x" range="&blockrange;">
-	<data spec='beast.app.seqgen.SimulatedAlignment' id="simulated.block.$(x)" sequencelength="{{seqlength}}"  dataType="binary"
-		  siteModel="@siteModel.sim" branchRateModel="@clock.sim" outputFileName="{{sequence_output}}">
-		<tree id="marginalTree.sim.$(x)" spec="MarginalTree" network="@acg.sim" block="@block$(x).sim" nodetype="contactrees.MarginalNode"/> 
-	    <data spec="Alignment" dataType="binary">
-	        {{#taxa}}
-	        <sequence taxon="{{.}}" totalcount="2">?</sequence>
-	        {{/taxa}}
-	    </data>
-	</data>
+    <data spec='beast.app.seqgen.SimulatedAlignment' id="simulated.block.$(x)" sequencelength="{{seqlength}}"  dataType="binary"
+          siteModel="@siteModel.sim" outputFileName="{{sequence_output}}">
+        <tree id="marginalTree.sim.$(x)" spec="MarginalTree" network="@acg.sim" block="@block$(x).sim" branchRateModel="@clock.sim" />
+        <data spec="Alignment" dataType="binary">
+            {{#taxa}}
+            <sequence taxon="{{.}}" totalcount="2">?</sequence>
+            {{/taxa}}
+        </data>
+    </data>
 </plate>
 
 
@@ -94,9 +95,6 @@
 
     <!-- STATE -->
  	<state id="state" storeEvery="10000">
-        <!--
-        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
-        -->
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x)"/>
@@ -127,8 +125,8 @@
         <!-- LIKELIHOOD -->
         <distribution id="likelihood" spec="util.CompoundDistribution">
             <plate var="x" range="&blockrange;">
-                <distribution id="treeLikelihood.block$(x)" spec="TreeLikelihood" branchRateModel="@clock" siteModel="@siteModel" data="@simulated.block.$(x)">
-                    <tree id="marginalTree.$(x)" spec="MarginalTree" network="@acg" block="@block$(x)" nodetype="contactrees.MarginalNode"/>    
+                <distribution id="treeLikelihood.block$(x)" spec="TreeLikelihood" siteModel="@siteModel" data="@simulated.block.$(x)">
+                    <tree id="marginalTree.$(x)" spec="MarginalTree" network="@acg" block="@block$(x)" branchRateModel="@clock"/>    
                 </distribution>
             </plate>
             
@@ -145,6 +143,9 @@
     <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="{{log_every}}"
             sanitiseHeaders="true" sort="smart">
         <log idref="prior"/>
+        <log id="treeDistance" spec="beast.evolution.tree.TreeDistanceLogger" tree="@acg">
+            <ref idref="acg.sim"/>
+        </log>
 {{#logs}}
 {{{.}}}
 {{/logs}}
@@ -154,6 +155,7 @@
         <log idref="posterior"/>
         <log idref="likelihood"/>
         <log idref="prior"/>
+        <log idref="treeDistance"/>
 {{#logs}}
 {{{.}}}
 {{/logs}}
@@ -161,6 +163,10 @@
 
     <logger spec="Logger" fileName="$(filebase).trees" logEvery="{{log_every}}" mode="tree">
     	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
+    </logger>
+    
+    <logger spec="Logger" fileName="$(filebase).cf.trees" logEvery="{{log_every}}" mode="tree">
+        <log idref="acg"/>
     </logger>
 </run>
 

@@ -10,7 +10,6 @@
                  :beast.evolution.sitemodel
                  :beast.evolution.substitutionmodel
                  :beast.math.distributions
-
                  :beast.evolution.nuc
                  :beast.core
                  :beast.core.util
@@ -69,9 +68,6 @@
 
     <!-- STATE -->
     <state id="state" storeEvery="10000">
-        <!--
-        <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa"/>
-        -->
         <stateNode id="acg" spec="ConversionGraph" taxonset="@taxa" />
         <plate var="x" range="&blockrange;">
             <stateNode idref="block$(x).sim"/>
@@ -83,7 +79,8 @@
     </state>
 
     <!-- INITIALIZER -->
-    <init id="RandomACG" spec="beast.evolution.tree.SimpleRandomTree" estimate="false" initial="@acg" taxa="@simulated.block.0" rootHeight="1.0" limitCalibrations="0.6" branchMean="0.1" />
+    <init id="RandomACG" spec="beast.evolution.tree.SimpleRandomTree" estimate="false" initial="@acg" taxa="@simulated.block.0" rootHeight="1.0" limitCalibrations="0.9" branchMean="0.05" />
+    
 
     <!-- PRIOR -->
     <distribution id="prior" spec="util.CompoundDistribution">
@@ -96,7 +93,7 @@
 
     </distribution>
 
-    
+
     <!-- Operators -->
 {{#priorOperators}}
 {{{.}}}
@@ -104,7 +101,7 @@
 
 
     <!-- LOGGERS -->
-    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="50000"
+    <logger id="tracelog"  spec="Logger" fileName="$(filebase).log" logEvery="{{sample_interval}}"
             sanitiseHeaders="true" sort="smart">
         <log idref="prior"/>
 {{#logs}}
@@ -112,15 +109,15 @@
 {{/logs}}
     </logger>
 
-    <logger id="screenlog" spec="Logger" logEvery="50000">
+    <logger id="screenlog" spec="Logger" logEvery="{{sample_interval}}">
         <log idref="prior"/>
 {{#logs}}
 {{{.}}}
 {{/logs}}
     </logger>
 
-    <logger spec="Logger" fileName="$(filebase).trees" logEvery="50000" mode="tree">
-    	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks"/>
+    <logger spec="Logger" fileName="$(filebase).trees" logEvery="{{sample_interval}}" mode="tree">
+    	<log spec="ACGWithMetaDataLogger" network="@acg" blockSet="@allBlocks" branchratemodel="@clock"/>
     </logger>
 </run>
   
