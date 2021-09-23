@@ -44,7 +44,7 @@ operators = """
     </operator>
 
     <operator id="CFConversionSwap.t" spec="CFConversionSwap" acg="@acg" conversionRate="@conversionRate" 
-                  pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="4.0"/>
+                  pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="3.0"/>
 
     <operator id="ExpectedConversionScaler" spec="ScaleOperator" parameter="@expectedConversions" scaleFactor="0.8" weight="5.0"/>
     <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.6" weight="5.0"/>
