@@ -15,7 +15,7 @@ SAMPLING.DIR = "intermediate/sampling/"
 main = function(){
     ntax = 15
     nsamples = 40
-    simu_sample_interval = 50000
+    simu_sample_interval = 100000
     repeats = 1
 
     mkdir("intermediate/sampling")
@@ -75,7 +75,7 @@ main = function(){
         config_bt,
         taxa,
         "intermediate/basictrees/test.xml",
-        list(seqlength="10"),
+        list(seqlength="20"),
         repeats = repeats
     )
     
