@@ -10,4 +10,4 @@ clock_model = "clock_models/relaxed_lognormal.toml"
 chain_length = 5000000
 log_every = 1000
 sample_from_prior = false
-seqlength = 50
+seqlength = 100

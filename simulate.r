@@ -53,7 +53,7 @@ main = function(){
         config,
         taxa,
         "intermediate/test.xml",
-        list(seqlength="50"),
+        list(seqlength="100"),
         repeats = repeats
     )
     # merge with another template without sampling from prior
