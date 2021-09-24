@@ -16,7 +16,7 @@ population_model = """
                 <taxon idref="4" />
                 <taxon idref="5" />
               </taxonset>
-              <distr id="tmrca.clade345.prior" spec="Normal" mean="0.4" sigma="0.02"/>
+              <distr id="tmrca.clade345.prior" spec="Normal" mean="0.3" sigma="0.02"/>
             </distribution>
 """
 
@@ -25,6 +25,11 @@ logs = """
         <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
         <log idref="conversionRate"/>
         <log idref="pMove"/>
+"""
+
+groundTruthLogs = """
+        <log id="sim.expectedConversions" spec="RealParameter" value="{{expectedConversions}}"/>
+        <log id="sim.pMove" spec="RealParameter" value="{{pMove}}"/>
 """
 
 operators = """
@@ -54,9 +59,10 @@ _operators = """
 """
 
 parameters = """
-        <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
-        <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}"/>
-        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
+        <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birth_rate}}"/>
+        <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{p_move}}"/>
+        <stateNode id="expectedConversions" spec="RealParameter" estimate="true" value="{{expected_conversions}}"/>
+        <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg" />
 """
 
 priors = """"""
@@ -67,6 +73,6 @@ _priors = """
 """
 
 [defaults]
-birthRate = 2.5
-pMove = 0.3
-conversionRate = 0.4
+birth_rate = 5.5
+p_move = 0.2
+expected_conversions = 5.0
