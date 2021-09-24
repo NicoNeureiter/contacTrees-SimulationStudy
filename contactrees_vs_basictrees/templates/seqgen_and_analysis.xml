@@ -144,7 +144,7 @@
             sanitiseHeaders="true" sort="smart">
         <log idref="prior"/>
         <log id="treeDistance" spec="beast.evolution.tree.TreeDistanceLogger" tree="@acg">
-            <ref idref="acg.sim"/>
+            <ref id="groundTruth.acg" spec="ConversionGraph" taxonset="@taxa" newick="{{tree}}" dropNewickConvs="true"/>
         </log>
 {{#logs}}
 {{{.}}}
