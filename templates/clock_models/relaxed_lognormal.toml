@@ -38,6 +38,8 @@ logs = """
         <log idref="clockRate"/>
         <log idref="ucldStdev:clock"/>
         <log idref="branchRates"/>
+
+        <log id="groundTruth.branchRates" spec="RealParameter" value="{{branchRates}}"/>
 """
 
 _logs = """
