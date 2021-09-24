@@ -17,9 +17,13 @@ operators = """
 priorOperators = """
     <operator id="clockRateScaler" spec="ScaleOperator" parameter="@clockRate" scaleFactor="0.25" weight="10.0"/>
 """
+
 logs = """
         <log idref="clockRate"/>
-        <log id="groundTruth.clockRate" spec="RealParameter" value="{{clockRate}}"/>
+"""
+
+groundTruthLogs = """
+        <log id="sim.clockRate" spec="RealParameter" value="{{clockRate}}"/>
 """
 
 [defaults]

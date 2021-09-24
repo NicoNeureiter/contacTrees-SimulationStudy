@@ -33,18 +33,20 @@ _operators = """
           rates="@branchRates" stdev="@ucldStdev:clock" distr="@logNormal:ucldStdev:clock" scaleFactor="0.5" weight="3.0"/>
 """
 
-
 logs = """
         <log idref="clockRate"/>
         <log idref="ucldStdev:clock"/>
         <log idref="branchRates"/>
-
-        <log id="groundTruth.branchRates" spec="RealParameter" value="{{branchRates}}"/>
 """
 
 _logs = """
         <log branchratemodel="@clock" spec="beast.evolution.branchratemodel.RateStatistic" tree="@acg"/>
 """
+
+groundTruthLogs = """
+        <log id="sim.branchRates" spec="RealParameter" value="{{branchRates}}"/>
+"""
+
 
 [defaults]
 clockRate = 1.0

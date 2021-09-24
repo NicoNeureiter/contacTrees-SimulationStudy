@@ -157,6 +157,9 @@
 {{#logs}}
 {{{.}}}
 {{/logs}}
+{{#groundTruthLogs}}
+{{{.}}}
+{{/groundTruthLogs}}
     </logger>
 
     <logger id="screenlog" spec="Logger" logEvery="5000">

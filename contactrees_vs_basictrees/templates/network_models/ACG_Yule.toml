@@ -25,14 +25,17 @@ population_model = """
 
 """
 
+
 logs = """
         <log idref="birthRate"/>
         <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
         <log idref="expectedConversions"/>
         <log idref="pMove"/>
+"""
 
-        <log id="groundTruth.expectedConversions" spec="RealParameter" value="{{expectedConversions}}"/>
-        <log id="groundTruth.pMove" spec="RealParameter" value="{{pMove}}"/>
+groundTruthLogs = """
+        <log id="sim.expectedConversions" spec="RealParameter" value="{{expectedConversions}}"/>
+        <log id="sim.pMove" spec="RealParameter" value="{{pMove}}"/>
 """
 
 operators = """
