@@ -1,6 +1,6 @@
 [xml]
 population_model = """
-        <distribution id="networkPrior" spec="contactrees.model.ACGDistribution" network="@acg" conversionRate="@conversionRate" linearContactGrowth="true" upperConvCountBound="20">
+        <distribution id="networkPrior" spec="contactrees.model.ACGDistribution" network="@acg" expectedConversions="@expectedConversions" linearContactGrowth="true" upperConvCountBound="20">
             <cfModel id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false"/>
         </distribution>
         <distribution id="ConvMovePrior.t:treeSim" spec="ConversionMovePrior" network="@acg" blockSet="@allBlocks" pMove="@pMove"/>
