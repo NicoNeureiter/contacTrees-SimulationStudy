@@ -14,7 +14,7 @@ SAMPLING.DIR = "intermediate/sampling/"
 
 main = function(){
     ntax = 15
-    nsamples = 40
+    nsamples = 20
     simu_sample_interval = 100000
     repeats = 1
 
@@ -62,7 +62,7 @@ main = function(){
         config_ct,
         taxa,
         "intermediate/contactrees/test.xml",
-        list(seqlength="20"),
+        list(seqlength="200"),
         repeats = repeats
     )
 
@@ -75,7 +75,7 @@ main = function(){
         config_bt,
         taxa,
         "intermediate/basictrees/test.xml",
-        list(seqlength="20"),
+        list(seqlength="200"),
         repeats = repeats
     )
     

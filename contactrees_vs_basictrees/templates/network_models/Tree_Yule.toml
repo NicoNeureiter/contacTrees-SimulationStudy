@@ -40,8 +40,8 @@ operators = """
     <operator id="wide.t:z" isNarrow="false" spec="Exchange" tree="@acg" weight="10.0"/>
     <operator id="WilsonBalding.t:z" spec="WilsonBalding" tree="@acg" weight="10.0"/>
     <operator id="UniformOperator.t" spec="Uniform" tree="@acg" weight="30.0"/>
-    <operator id="treescaler.rootOnly.t" spec="ScaleOperator" rootOnly="true" scaleFactor="0.5" tree="@acg" weight="3.0"/>
-    <operator id="treescaler.t" spec="ScaleOperator" scaleFactor="0.5" tree="@acg" weight="3.0"/>
+    <operator id="treescaler.rootOnly.t" spec="ScaleOperator" rootOnly="true" scaleFactor="0.8" tree="@acg" weight="3.0"/>
+    <operator id="treescaler.t" spec="ScaleOperator" scaleFactor="0.85" tree="@acg" weight="3.0"/>
 """
 
 _operators = """

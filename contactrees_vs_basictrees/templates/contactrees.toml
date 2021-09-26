@@ -10,4 +10,4 @@ clock_model = "clock_models/strict.toml"
 chain_length = 6000000
 log_every =  2000
 sample_from_prior = false
-seqlength = 20
+seqlength = 200
