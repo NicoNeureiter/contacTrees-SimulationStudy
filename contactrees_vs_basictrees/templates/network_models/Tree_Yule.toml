@@ -6,15 +6,17 @@ population_model = """
               <taxonset id="clade12" spec="TaxonSet">
                 <taxon idref="1" />
                 <taxon idref="2" />
+                <taxon idref="3" />
               </taxonset>
               <distr id="tmrca.clade12.prior" spec="Normal" mean="0.2" sigma="0.02"/>
             </distribution>
 
             <distribution id="clade345.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
               <taxonset id="clade345" spec="TaxonSet">
-                <taxon idref="3" />
                 <taxon idref="4" />
                 <taxon idref="5" />
+                <taxon idref="6" />
+                <taxon idref="7" />
               </taxonset>
               <distr id="tmrca.clade345.prior" spec="Normal" mean="0.3" sigma="0.02"/>
             </distribution>
@@ -33,15 +35,19 @@ groundTruthLogs = """
 """
 
 operators = """
-    <operator id="SubtreeSlide.t:tree" spec="SubtreeSlide" tree="@acg" weight="15.0"/>
-    <operator id="NNI" spec="NNI" weight="25" tree="@acg"/>
-    <operator id="SPR" spec="SPR" weight="5" tree="@acg"/>
-    <operator id="narrow.t:z" spec="Exchange" tree="@acg" weight="15.0"/>
-    <operator id="wide.t:z" isNarrow="false" spec="Exchange" tree="@acg" weight="10.0"/>
-    <operator id="WilsonBalding.t:z" spec="WilsonBalding" tree="@acg" weight="10.0"/>
+    <operator id="SubtreeSlide.t:tree" size="0.05" spec="SubtreeSlide" tree="@acg" weight="15.0"/>
+    <operator id="NNI" spec="NNI" size="0.05" weight="20" tree="@acg"/>
+    <operator id="SPR" spec="SPR" size="0.05" weight="5" tree="@acg"/>
+    <operator id="narrow.t:z" spec="Exchange" tree="@acg" weight="10.0"/>
+    <operator id="wide.t:z" isNarrow="false" spec="Exchange" tree="@acg" weight="8.0"/>
+    <operator id="WilsonBalding.t:z" spec="WilsonBalding" tree="@acg" weight="8.0"/>
     <operator id="UniformOperator.t" spec="Uniform" tree="@acg" weight="30.0"/>
-    <operator id="treescaler.rootOnly.t" spec="ScaleOperator" rootOnly="true" scaleFactor="0.8" tree="@acg" weight="3.0"/>
-    <operator id="treescaler.t" spec="ScaleOperator" scaleFactor="0.85" tree="@acg" weight="3.0"/>
+    <operator id="treescaler.rootOnly.t" spec="ScaleOperator" rootOnly="true" scaleFactor="0.8" tree="@acg" weight="2.0"/>
+    <operator id="treescaler.t" spec="ScaleOperator" scaleFactor="0.92" tree="@acg" weight="2.0"/>
+    <operator id="treescaler.updown.t" spec="UpDownOperator" scaleFactor="0.8" weight="10.0">
+        <up idref="clockRate"/>
+        <down idref="acg"/>
+    </operator>
 """
 
 _operators = """
@@ -73,6 +79,6 @@ _priors = """
 """
 
 [defaults]
-birth_rate = 5.5
-p_move = 0.2
-expected_conversions = 5.0
+birth_rate = 8.0
+p_move = 0.25
+expected_conversions = 6.0

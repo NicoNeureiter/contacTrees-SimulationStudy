@@ -9,21 +9,22 @@ population_model = """
               <taxonset id="clade12" spec="TaxonSet">
                 <taxon idref="1" />
                 <taxon idref="2" />
+                <taxon idref="3" />
               </taxonset>
               <distr id="tmrca.clade12.prior" spec="Normal" mean="0.2" sigma="0.02"/>
             </distribution>
 
             <distribution id="clade345.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
               <taxonset id="clade345" spec="TaxonSet">
-                <taxon idref="3" />
                 <taxon idref="4" />
                 <taxon idref="5" />
+                <taxon idref="6" />
+                <taxon idref="7" />
               </taxonset>
               <distr id="tmrca.clade345.prior" spec="Normal" mean="0.3" sigma="0.02"/>
             </distribution>
 
 """
-
 
 logs = """
         <log idref="birthRate"/>
@@ -41,8 +42,8 @@ operators = """
     <operator id="ACGscaler.updown.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="9.0">
         <parameterInverse idref="clockRate"/>
     </operator>
-    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="1.0"/>
-    <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.85" weight="1.0" rootOnly="true"/>
+    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.92" weight="1.0"/>
+    <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.8" weight="1.0" rootOnly="true"/>
 
     <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1" networkPrior="@networkPrior" weight="3.0"/>
     <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="20.0"/>
@@ -82,7 +83,6 @@ operators = """
     </operator>
     <operator id="CFConversionSwap.t" spec="CFConversionSwap" acg="@acg" conversionRate="@conversionRate" 
                   pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="3.0"/>
-
 """
 _operators = """
     <operator id="ExpectedConversionScaler" spec="ScaleOperator" parameter="@expectedConversions" scaleFactor="0.6" weight="5.0"/>
@@ -95,8 +95,8 @@ priorOperators = """
     <operator id="ACGscaler.updown.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="9.0">
         <parameterInverse idref="clockRate"/>
     </operator>
-    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="3.0"/>
-    <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.9" weight="3.0" rootOnly="true"/>
+    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.8" weight="3.0"/>
+    <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="3.0" rootOnly="true"/>
 
     <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1" networkPrior="@networkPrior" weight="10.0"/>
     <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="10.0"/>
@@ -130,6 +130,6 @@ _priors = """
 """
 
 [defaults]
-birth_rate = 5.5
+birth_rate = 8.0
 p_move = 0.25
 expected_conversions = 6.0
