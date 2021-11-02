@@ -69,20 +69,21 @@ _operators = """
 
 parameters = """
         <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birthRate}}"/>
-        <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}" lower="0.01" upper="0.35"/>
-        <stateNode id="expectedConversions" spec="RealParameter" estimate="true" value="{{expectedConversions}}" lower="0.0" upper="20.0"/>
+        <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{pMove}}" />
+        <stateNode id="expectedConversions" spec="RealParameter" estimate="true" value="{{expectedConversions}}" />
         <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg" linearContactGrowth="true" />
 """
 _parameters = """
-        <stateNode id="conversionRate" spec="RealParameter" estimate="true" value="{{conversionRate}}"/>
 """
 
 priors = """
             <prior id="pMovePrior" name="distribution" x="@pMove">
-                <Beta id="Beta.pMove" name="distr" alpha="6.0" beta="36.0"/>
+                <!--Beta id="Beta.pMove" name="distr" alpha="6.0" beta="24.0"/-->
+                <Uniform name="distr" lower="0.15" upper="0.25"/>
             </prior>
             <prior id="expectedConversionsPrior" name="distribution" x="@expectedConversions">
-                <distr id="distr.expectedConversionsPrior" spec="beast.math.distributions.Gamma" alpha="10.0" beta="0.4" />
+                <!--distr id="distr.expectedConversionsPrior" spec="beast.math.distributions.Gamma" alpha="10.0" beta="0.6" /-->
+                <Uniform name="distr" lower="3.0" upper="9.0"/>
             </prior>
 """
 _priors = """
@@ -92,7 +93,7 @@ _priors = """
 """
 
 [defaults]
-birthRate = 2.0
-pMove = 0.15
+birthRate = 5.0
+pMove = 0.2
 conversionRate = 1.0
-expectedConversions = 4.0
+expectedConversions = 6.0
