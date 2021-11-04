@@ -4,10 +4,10 @@
 alignment = "alignment.toml"
 substitution_model = "subst_models/ctmc.toml"
 population_model = "network_models/Tree_Yule.toml"
-clock_model = "clock_models/strict.toml"
+clock_model = "clock_models/relaxed_lognormal.toml"
 
 [defaults]
-chain_length = 6000000
-log_every =  3000
+chain_length = 20000000
+log_every = 5000
 sample_from_prior = false
 seqlength = 20

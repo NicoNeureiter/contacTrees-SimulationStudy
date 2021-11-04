@@ -1,27 +1,35 @@
 [xml]
 population_model = """
-            <distribution id="networkPrior" spec="contactrees.model.ACGDistribution" network="@acg" upperConvCountBound="20" expectedConversions="@expectedConversions">
+            <distribution id="networkPrior" spec="contactrees.model.ACGDistribution" network="@acg" upperConvCountBound="20" expectedConversions="@expectedConversions" linearContactGrowth="true">
                 <cfModel id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false"/>
             </distribution>
             <distribution id="ConvMovePrior.t:treeSim" spec="ConversionMovePrior" network="@acg" blockSet="@allBlocks" pMove="@pMove"/>
 
-            <distribution id="clade12.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
-              <taxonset id="clade12" spec="TaxonSet">
+
+            <distribution id="clade123.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade123" spec="TaxonSet">
                 <taxon idref="1" />
                 <taxon idref="2" />
                 <taxon idref="3" />
               </taxonset>
-              <distr id="tmrca.clade12.prior" spec="Normal" mean="0.2" sigma="0.02"/>
+              <distr spec="Normal" mean="0.35" sigma="0.02"/>
             </distribution>
 
-            <distribution id="clade345.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
-              <taxonset id="clade345" spec="TaxonSet">
+            <distribution id="clade456.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade456" spec="TaxonSet">
                 <taxon idref="4" />
                 <taxon idref="5" />
                 <taxon idref="6" />
-                <taxon idref="7" />
               </taxonset>
-              <distr id="tmrca.clade345.prior" spec="Normal" mean="0.3" sigma="0.02"/>
+              <distr spec="Normal" mean="0.4" sigma="0.02"/>
+            </distribution>
+
+            <distribution id="clade78.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade78" spec="TaxonSet">
+                <taxon idref="7" />
+                <taxon idref="8" />
+              </taxonset>
+              <distr spec="Normal" mean="0.2" sigma="0.02"/>
             </distribution>
 
 """
@@ -29,6 +37,7 @@ population_model = """
 logs = """
         <log idref="birthRate"/>
         <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
+        <log idref="conversionRate"/>
         <log idref="expectedConversions"/>
         <log idref="pMove"/>
 """
@@ -83,11 +92,11 @@ operators = """
     </operator>
     <operator id="CFConversionSwap.t" spec="CFConversionSwap" acg="@acg" conversionRate="@conversionRate" 
                   pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="3.0"/>
-"""
-_operators = """
+
     <operator id="ExpectedConversionScaler" spec="ScaleOperator" parameter="@expectedConversions" scaleFactor="0.6" weight="5.0"/>
     <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.6" weight="5.0"/>
-
+"""
+_operators = """
     <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
 """
 
@@ -105,31 +114,32 @@ priorOperators = """
 
     <operator id="AddRemoveConversion.t" spec="AddRemoveConversion" weight="30.0" acg="@acg" networkPrior="@networkPrior" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks"/>
     <operator id="BorrowingOperator" spec="ResampleBorrowings" weight="15.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks"/>
-"""
-_priorOperators = """
+
     <operator id="ExpectedConversionScaler" spec="ScaleOperator" parameter="@expectedConversions" scaleFactor="0.4" weight="5.0"/>
     <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.55" weight="5.0"/>
+"""
+_priorOperators = """
 """
 
 parameters = """
         <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birth_rate}}"/>
         <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{p_move}}"/>
         <stateNode id="expectedConversions" spec="RealParameter" estimate="true" value="{{expected_conversions}}"/>
-        <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg" />
+        <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg" linearContactGrowth="true" />
 """
 
 priors = """
-"""
-_priors = """
             <prior id="pMovePrior" name="distribution" x="@pMove">
-                <Beta id="Beta.pMove" name="distr" alpha="5.0" beta="20.0"/>
+                <Uniform name="distr" lower="0.15" upper="0.25"/>
             </prior>
             <prior id="expectedConversionsPrior" name="distribution" x="@expectedConversions">
-                <distr id="distr.expectedConversionsPrior" spec="beast.math.distributions.Gamma" alpha="25.0" beta="0.2" />
+                <Uniform name="distr" lower="3.0" upper="9.0"/>
             </prior>
+"""
+_priors = """
 """
 
 [defaults]
-birth_rate = 8.0
-p_move = 0.25
+birth_rate = 2.7
+p_move = 0.2
 expected_conversions = 6.0

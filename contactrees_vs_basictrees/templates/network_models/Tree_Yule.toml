@@ -2,23 +2,30 @@
 population_model = """
             <distribution id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false" />
 
-            <distribution id="clade12.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
-              <taxonset id="clade12" spec="TaxonSet">
+            <distribution id="clade123.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade123" spec="TaxonSet">
                 <taxon idref="1" />
                 <taxon idref="2" />
                 <taxon idref="3" />
               </taxonset>
-              <distr id="tmrca.clade12.prior" spec="Normal" mean="0.2" sigma="0.02"/>
+              <distr spec="Normal" mean="0.35" sigma="0.02"/>
             </distribution>
 
-            <distribution id="clade345.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
-              <taxonset id="clade345" spec="TaxonSet">
+            <distribution id="clade456.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade456" spec="TaxonSet">
                 <taxon idref="4" />
                 <taxon idref="5" />
                 <taxon idref="6" />
-                <taxon idref="7" />
               </taxonset>
-              <distr id="tmrca.clade345.prior" spec="Normal" mean="0.3" sigma="0.02"/>
+              <distr spec="Normal" mean="0.4" sigma="0.02"/>
+            </distribution>
+
+            <distribution id="clade78.prior" spec="MRCAPrior" tree="@acg" monophyletic="true">
+              <taxonset id="clade78" spec="TaxonSet">
+                <taxon idref="7" />
+                <taxon idref="8" />
+              </taxonset>
+              <distr spec="Normal" mean="0.2" sigma="0.02"/>
             </distribution>
 """
 
@@ -67,7 +74,7 @@ _operators = """
 parameters = """
         <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birth_rate}}"/>
         <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{p_move}}"/>
-        <stateNode id="expectedConversions" spec="RealParameter" estimate="true" value="{{expected_conversions}}"/>
+        <stateNode id="expectedConversions" spec="RealParameter" estimate="true" value="0.0"/>
         <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg" />
 """
 
@@ -79,6 +86,6 @@ _priors = """
 """
 
 [defaults]
-birth_rate = 8.0
-p_move = 0.25
+birth_rate = 2.7
+p_move = 0.2
 expected_conversions = 6.0
