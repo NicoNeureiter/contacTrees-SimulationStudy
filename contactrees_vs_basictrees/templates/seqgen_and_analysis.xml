@@ -58,7 +58,10 @@
     </substModel>
 </siteModel>
 
-<branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.StrictClockModel" clock.rate="{{clockRate}}"/>
+<branchRateModel id="clock.sim" spec="beast.evolution.branchratemodel.UCRelaxedClockModel" tree="@acg.sim" clock.rate="{{clockRate}}">
+    <rates id="branchRates.sim" spec="RealParameter">{{branchRates}}</rates>
+    <LogNormal id="logNormal:ucldStdev:clock.sim" meanInRealSpace="true" name="distr" M="1.0" S="@ucldStdev:clock" />
+</branchRateModel>
 
 <!-- SIMULATED DATA -->
 <plate var="x" range="&blockrange;">
