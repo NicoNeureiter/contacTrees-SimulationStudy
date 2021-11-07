@@ -15,7 +15,7 @@ SAMPLING.DIR = "intermediate/sampling/"
 main = function(){
     ntax = 20
     nsamples = 100
-    simu_sample_interval = 30000
+    simu_sample_interval = 10000
     repeats = 1
 
     mkdir("intermediate/sampling")
