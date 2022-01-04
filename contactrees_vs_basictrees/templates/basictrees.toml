@@ -3,8 +3,8 @@
 [templates]
 alignment = "alignment.toml"
 substitution_model = "subst_models/ctmc.toml"
-population_model = "network_models/Tree_Yule.toml"
-clock_model = "clock_models/relaxed_lognormal.toml"
+population_model = "network_models/Tree_Yule_fixedRate.toml"
+clock_model = "clock_models/relaxed_lognormal_fixedRate.toml"
 
 [defaults]
 chain_length = 15000000

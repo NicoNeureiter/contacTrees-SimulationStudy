@@ -1,0 +1,117 @@
+[xml]
+population_model = """
+            <distribution id="networkPrior" spec="contactrees.model.ACGDistribution" network="@acg" upperConvCountBound="20" expectedConversions="@expectedConversions" linearContactGrowth="true">
+                <cfModel id="YuleModel" spec="beast.evolution.speciation.YuleModel" tree="@acg" birthDiffRate="@birthRate" conditionalOnRoot="false"/>
+            </distribution>
+            <distribution id="ConvMovePrior.t:treeSim" spec="ConversionMovePrior" network="@acg" blockSet="@allBlocks" pMove="@pMove"/>
+"""
+
+logs = """
+        <log idref="birthRate"/>
+        <log spec="ACGStatsLogger" network="@acg" blockSet="@allBlocks"/>
+        <log idref="conversionRate"/>
+        <log idref="expectedConversions"/>
+        <log idref="pMove"/>
+"""
+
+groundTruthLogs = """
+        <log id="sim.expectedConversions" spec="RealParameter" value="{{expectedConversions}}"/>
+        <log id="sim.pMove" spec="RealParameter" value="{{pMove}}"/>
+"""
+
+operators = """
+    <operator id="ACGscaler.updown.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="9.0">
+        <parameterInverse idref="clockRate"/>
+    </operator>
+    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.92" weight="1.0"/>
+    <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.8" weight="1.0" rootOnly="true"/>
+
+    <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1" networkPrior="@networkPrior" weight="3.0"/>
+    <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="20.0"/>
+    <operator id="CFNarrowExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="true" networkPrior="@networkPrior" weight="7.0"/>      
+    <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" networkPrior="@networkPrior" weight="3.0"/>
+
+    <operator id="AddRemoveConversion.t" spec="AddRemoveConversionGibbs" weight="45.0" acg="@acg" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks" networkPrior="@networkPrior">
+        <plate var="x" range="&blockrange;">
+            <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+    <operator id="GibbsSampleMovesPerConversion.t" spec="GibbsSampleMovesPerConversion" weight="20.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks">
+        <plate var="x" range="&blockrange;">
+            <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+    <operator id="ConvertedEdgeSlide.t" spec="ConvertedEdgeSlide" acg="@acg" weight="12.0"/>
+    <operator id="ConvertedEdgeHop.source" spec="ConvertedEdgeHopGibbs" acg="@acg" sourceOnly="true" blockSet="@allBlocks" pMove="@pMove" conversionRate="@conversionRate" networkPrior="@networkPrior" weight="2.0">
+        <plate var="x" range="&blockrange;">
+          <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+    <operator id="ConvertedEdgeHop.source.narrow" spec="ConvertedEdgeHopGibbs" acg="@acg" sourceOnly="true" nClosestRelatives="3" blockSet="@allBlocks" pMove="@pMove" conversionRate="@conversionRate" networkPrior="@networkPrior" weight="4.0">
+        <plate var="x" range="&blockrange;">
+          <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+    <operator id="ConvertedEdgeHop" spec="ConvertedEdgeHopGibbs" acg="@acg" blockSet="@allBlocks" pMove="@pMove" conversionRate="@conversionRate" networkPrior="@networkPrior" weight="8.0">
+        <plate var="x" range="&blockrange;">
+          <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+    <operator id="ConvertedEdgeHop.narrow" spec="ConvertedEdgeHopGibbs" acg="@acg" blockSet="@allBlocks" nClosestRelatives="3" pMove="@pMove" conversionRate="@conversionRate" networkPrior="@networkPrior" weight="4.0">
+        <plate var="x" range="&blockrange;">
+          <treeLikelihood idref="treeLikelihood.block$(x)"/>
+        </plate>
+    </operator>
+    <operator id="CFConversionSwap.t" spec="CFConversionSwap" acg="@acg" conversionRate="@conversionRate" 
+                  pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="3.0"/>
+
+    <operator id="ExpectedConversionScaler" spec="ScaleOperator" parameter="@expectedConversions" scaleFactor="0.6" weight="5.0"/>
+    <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.6" weight="5.0"/>
+"""
+_operators = """
+    <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
+"""
+
+priorOperators = """
+    <operator id="ACGscaler.updown.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="9.0">
+        <parameterInverse idref="clockRate"/>
+    </operator>
+    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.8" weight="3.0"/>
+    <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="3.0" rootOnly="true"/>
+
+    <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1" networkPrior="@networkPrior" weight="10.0"/>
+    <operator id="CFUniform.t" spec="CFUniform" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" networkPrior="@networkPrior" weight="10.0"/>
+    <operator id="CFNarrowExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="true" networkPrior="@networkPrior" weight="5.0"/>
+    <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" networkPrior="@networkPrior" weight="10.0"/>
+
+    <operator id="AddRemoveConversion.t" spec="AddRemoveConversion" weight="30.0" acg="@acg" networkPrior="@networkPrior" pMove="@pMove" conversionRate="@conversionRate" blockSet="@allBlocks"/>
+    <operator id="BorrowingOperator" spec="ResampleBorrowings" weight="15.0" acg="@acg" pMove="@pMove" blockSet="@allBlocks"/>
+
+    <operator id="ExpectedConversionScaler" spec="ScaleOperator" parameter="@expectedConversions" scaleFactor="0.4" weight="5.0"/>
+    <operator id="PMoveScaler" spec="ScaleOperator" parameter="@pMove" scaleFactor="0.55" weight="5.0"/>
+"""
+_priorOperators = """
+"""
+
+parameters = """
+        <stateNode id="birthRate" spec="RealParameter" estimate="false" value="{{birth_rate}}"/>
+        <stateNode id="pMove" spec="RealParameter" estimate="true" value="{{p_move}}"/>
+        <stateNode id="expectedConversions" spec="RealParameter" estimate="true" value="{{expected_conversions}}"/>
+        <stateNode id="conversionRate" spec="ConversionRate" expectedConversions="@expectedConversions" network="@acg" linearContactGrowth="true" />
+"""
+
+priors = """
+            <prior id="pMovePrior" name="distribution" x="@pMove">
+                <Uniform name="distr" lower="0.15" upper="0.25"/>
+            </prior>
+            <prior id="expectedConversionsPrior" name="distribution" x="@expectedConversions">
+                <Uniform name="distr" lower="3.0" upper="9.0"/>
+            </prior>
+"""
+_priors = """
+"""
+
+[defaults]
+birth_rate = 2.7
+p_move = 0.2
+expected_conversions = 6.0
