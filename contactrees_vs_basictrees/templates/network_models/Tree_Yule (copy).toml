@@ -24,7 +24,11 @@ operators = """
     <operator id="WilsonBalding.t:z" spec="WilsonBalding" tree="@acg" weight="8.0"/>
     <operator id="UniformOperator.t" spec="Uniform" tree="@acg" weight="30.0"/>
     <operator id="treescaler.rootOnly.t" spec="ScaleOperator" rootOnly="true" scaleFactor="0.8" tree="@acg" weight="2.0"/>
-    <operator id="treescaler.t" spec="ScaleOperator" scaleFactor="0.92" tree="@acg" weight="5.0"/>
+    <operator id="treescaler.t" spec="ScaleOperator" scaleFactor="0.92" tree="@acg" weight="2.0"/>
+    <operator id="treescaler.updown.t" spec="UpDownOperator" scaleFactor="0.8" weight="10.0">
+        <up idref="clockRate"/>
+        <down idref="acg"/>
+    </operator>
 """
 
 _operators = """
@@ -39,11 +43,6 @@ _operators = """
     <operator id="CFWideExchange.t" spec="CFSubtreeExchange" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" isNarrow="false" weight="5.0"/>
 
     <operator id="BirthRateScaler" spec="ScaleOperator" parameter="@birthRate" scaleFactor="0.7" weight="3.0"/>
-    
-    <operator id="treescaler.updown.t" spec="UpDownOperator" scaleFactor="0.8" weight="10.0">
-        <up idref="clockRate"/>
-        <down idref="acg"/>
-    </operator>
 """
 
 parameters = """

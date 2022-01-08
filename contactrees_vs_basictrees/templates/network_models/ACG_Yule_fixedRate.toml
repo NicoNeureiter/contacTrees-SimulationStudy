@@ -20,10 +20,7 @@ groundTruthLogs = """
 """
 
 operators = """
-    <operator id="ACGscaler.updown.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="9.0">
-        <parameterInverse idref="clockRate"/>
-    </operator>
-    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.92" weight="1.0"/>
+    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.92" weight="8.0"/>
     <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.8" weight="1.0" rootOnly="true"/>
 
     <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1" networkPrior="@networkPrior" weight="3.0"/>
@@ -73,10 +70,7 @@ _operators = """
 """
 
 priorOperators = """
-    <operator id="ACGscaler.updown.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="9.0">
-        <parameterInverse idref="clockRate"/>
-    </operator>
-    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.8" weight="3.0"/>
+    <operator id="ACGscaler.t" spec="ACGScaler" acg="@acg" scaleFactor="0.8" weight="6.0"/>
     <operator id="ACGscaler.rootOnly.t" spec="ACGScaler" acg="@acg" scaleFactor="0.7" weight="3.0" rootOnly="true"/>
 
     <operator id="CFWilsonBalding.t" spec="CFWilsonBalding" acg="@acg" conversionRate="@conversionRate" pMove="@pMove" blockSet="@allBlocks" includeRoot="false" alpha="0.1" networkPrior="@networkPrior" weight="10.0"/>

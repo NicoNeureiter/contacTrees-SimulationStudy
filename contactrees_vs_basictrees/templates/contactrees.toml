@@ -7,7 +7,7 @@ population_model = "network_models/ACG_Yule_fixedRate.toml"
 clock_model = "clock_models/relaxed_lognormal_fixedRate.toml"
 
 [defaults]
-chain_length = 15000000
-log_every = 5000
+chain_length = 20000
+log_every = 100
 sample_from_prior = false
 seqlength = 20

@@ -15,6 +15,9 @@ priors = """
         <prior id="branchRatesPrior" name="distribution" x="@branchRates">
             <LogNormal name="distr" meanInRealSpace="true" M="1.0" S="@ucldStdev:clock" />
         </prior>
+        <prior id="clockRatePrior" name="distribution" x="@clockRate">
+            <Uniform name="distr" lower="0.3" upper="0.7"/>
+        </prior>
 """
 
 _priors = """
